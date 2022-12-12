@@ -5,7 +5,7 @@ import { Variables } from "../../../style";
 
 SplashScreen.preventAutoHideAsync();
 
-const AppContainer = ({ children }) => {
+export const AppContainer = ({ children }) => {
   const [fontsLoaded] = useFonts({
     [Variables.fonts
       .default]: require("../../../../../assets/fonts/SourceSansPro-Regular.ttf"),
@@ -28,5 +28,3 @@ const AppContainer = ({ children }) => {
 
   return children;
 };
-
-export default AppContainer;
