@@ -1,9 +1,15 @@
-import AppNavigator from "./AppNavigator";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Navigation } from "../../core/navigation";
 import { LoginScreen } from "../Screens/Auth/LoginScreen";
-import { useAuth } from "../Contexts/Auth.context";
+import { DefaultNavigatorOptions } from "../style";
 
-export const AuthNavigator = () => {
-  const { loggedIn } = useAuth();
-
-  return <>{loggedIn ? <AppNavigator /> : <LoginScreen />}</>;
-};
+const Stack = createNativeStackNavigator();
+export const AuthNavigator = () => (
+  <Stack.Navigator {...DefaultNavigatorOptions}>
+    <Stack.Screen
+      component={LoginScreen}
+      name={Navigation.LOGIN}
+      options={{ headerShown: false }}
+    />
+  </Stack.Navigator>
+);

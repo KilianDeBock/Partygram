@@ -1,13 +1,11 @@
 import "react-native-url-polyfill/auto";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View } from "react-native";
-import AppContainer from "./src/app/Components/Shared/App/AppContainer";
+import { AppContainer } from "./src/app/Components/Shared/App/AppContainer";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { Variables } from "./src/app/style";
-import { NetworkCheck } from "./src/app/Components/Shared/Network/NetworkCheck";
-import { AuthProvider } from "./src/app/Contexts/Auth.context";
-import { AuthNavigator } from "./src/app/Navigators/AuthNavigator";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { AppContent } from "./src/app/Navigators/AppContent";
+import { AuthProvider } from "./src/app/Components/Shared/Auth/AuthProvider";
 
 const AppTheme = {
   ...DefaultTheme,
@@ -26,25 +24,14 @@ const queryClient = new QueryClient();
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <AppContainer>
-          <View style={styles.container}>
-            <NetworkCheck />
-            <NavigationContainer theme={AppTheme}>
-              <AuthNavigator />
-              <StatusBar style="dark" />
-            </NavigationContainer>
-          </View>
-        </AppContainer>
-      </AuthProvider>
+      <AppContainer>
+        <AuthProvider>
+          <NavigationContainer theme={AppTheme}>
+            <AppContent />
+            <StatusBar style="dark" />
+          </NavigationContainer>
+        </AuthProvider>
+      </AppContainer>
     </QueryClientProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: Variables.sizes.xl,
-    flex: 1,
-    backgroundColor: Variables.colors.grayLight,
-  },
-});

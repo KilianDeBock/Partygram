@@ -1,5 +1,3 @@
-const AppNavigator = () => {
+export const AppNavigator = () => {
   return null;
 };
-
-export default AppNavigator;
