@@ -1,11 +1,11 @@
 import "react-native-url-polyfill/auto";
 import { StatusBar } from "expo-status-bar";
-import { AppContainer } from "./src/app/Components/Shared/App/AppContainer";
+import { AppContainer } from "./src/app/components/shared/App/AppContainer.shared.component";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { Variables } from "./src/app/style";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { AppContent } from "./src/app/Navigators/AppContent";
-import { AuthProvider } from "./src/app/Components/Shared/Auth/AuthProvider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AppContent } from "./src/app/navigators/App.content";
+import { AuthProvider } from "./src/app/components/shared/Auth/AuthProvider.shared.component";
 
 const AppTheme = {
   ...DefaultTheme,

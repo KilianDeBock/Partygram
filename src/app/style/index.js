@@ -1,15 +1,15 @@
 const Colors = {
   red: "#fc5c65",
   blue: "#4ECDC4",
-  yellow: "#ffe66d",
+  yellow: "#7cff6d",
   black: "#000",
   white: "#fff",
   gray: "#8D8B88",
   grayLight: "#E5E5E5",
   background: "#EFEFF4",
   primary: "#4ECDC4",
-  secondary: "#ffe66d",
-  tertiary: "#fc5c65",
+  secondary: "#fc5c65",
+  tertiary: "#7cff6d",
 };
 
 const Fonts = {
