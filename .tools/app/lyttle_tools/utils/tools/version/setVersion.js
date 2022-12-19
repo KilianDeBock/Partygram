@@ -33,8 +33,10 @@ const getVersionNumbers = () => {
 const resetVersion = (lastVersion, { year, week, day }) => {
     const newVersion = `${year}.${week}.${day}.1: `;
     updateVersion(lastVersion, newVersion);
-    (0, log_1.log)("error", "Your version was incorrect, copy it again from version.txt");
-    process.exit(1);
+    if (main_1.config.app.isGitHook) {
+        (0, log_1.log)("error", "Your version was incorrect, copy it again from version.txt");
+        process.exit(1);
+    }
 };
 const set = (versions = null) => {
     const { year, week, day } = getVersionNumbers();
@@ -52,6 +54,8 @@ const set = (versions = null) => {
             myVersion[3] === myRevision);
         if (year !== myMajor || week !== myMinor || day !== myPatch) {
             resetVersion(versions[0], { year, week, day });
+            if (!main_1.config.app.isGitHook)
+                return true;
         }
         const newVersion = `${myMajor}.${myMinor}.${myPatch}.${myRevision}: `;
         if (versionChanged)
