@@ -1,74 +1,69 @@
-import { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
 import { useMutation } from "@tanstack/react-query";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet } from "react-native";
+import * as yup from "yup";
 import { login } from "../../../core/modules/auth/api";
-import isVoid from "../../../core/utils/isVoid";
-import Button from "../../components/design/Button/Button.design.component";
-import TextField from "../../components/design/Form/TextField.design.component";
-import Title from "../../components/design/Text/Title.design.component";
-import { Variables } from "../../style";
 import { Navigation } from "../../../core/navigation";
+import TextButton from "../../components/design/Button/TextButton.design.component";
+import ErrorMessage from "../../components/design/Text/ErrorMessage.design.component";
+import Title from "../../components/design/Text/Title.design.component";
+import DefaultView from "../../components/design/View/DefaultView.design.component";
+import AppForm from "../../components/shared/Form/AppForm.shared.component";
+import AppSubmitButton from "../../components/shared/Form/AppSubmitButton.shared.component";
+import AppTextField from "../../components/shared/Form/AppTextField.shared.component";
+import { Variables } from "../../style";
+
+const schema = yup.object().shape({
+  email: yup.string().email().required(),
+  password: yup.string().required(),
+});
 
 export const LoginScreen = ({ navigation }) => {
   const { mutate, isLoading, isError, error } = useMutation(login);
 
-  const [data, setData] = useState({
-    email: "",
-    password: "",
-  });
-
-  useEffect(() => {
-    if (isError) {
-      alert(error);
-    }
-  }, [isError]);
-
-  const handleChange = (name, value) => {
-    setData({
-      ...data,
-      [name]: value,
-    });
+  const handleSubmit = async (values) => {
+    mutate(values);
   };
 
-  const handlePress = async () => {
-    if (!isVoid(data.email) && !isVoid(data.password)) {
-      mutate({ ...data });
-    }
+  const handleRegisterPress = () => {
+    navigation.navigate(Navigation.REGISTER);
   };
 
   return (
-    <View style={styles.container}>
-      <Title style={styles.title}>Login</Title>
-      <TextField
-        label="Email"
-        name="email"
-        disabled={isLoading}
-        value={data.email}
-        placeholder="sancla@student.arteveldehs.be"
-        autoComplete="email"
-        keyboardType="email-address"
-        onChangeText={(text) => handleChange("email", text)}
-      />
-      <TextField
-        label="Password"
-        name="password"
-        disabled={isLoading}
-        value={data.password}
-        secureTextEntry={true}
-        onChangeText={(text) => handleChange("password", text)}
-      />
-      <Button style={styles.button} onPress={handlePress} disabled={isLoading}>
-        Login
-      </Button>
-      <Button
-        style={styles.button}
-        color={Variables.colors.secondary}
-        onPress={() => navigation.navigate(Navigation.REGISTER)}
-        disabled={isLoading}
+    <>
+      <AppForm
+        initialValues={{
+          email: "",
+          password: "",
+        }}
+        validationSchema={schema}
+        onSubmit={handleSubmit}
       >
-        Or register instead
-      </Button>
-    </View>
+        <DefaultView style={styles.container}>
+          <Title style={styles.title}>Login</Title>
+          {isError && <ErrorMessage error={error} />}
+          <AppTextField
+            label="Email"
+            name="email"
+            disabled={isLoading}
+            placeholder="john@doe.com"
+            autoComplete="email"
+            keyboardType="email-address"
+          />
+          <AppTextField
+            label="Password"
+            name="password"
+            disabled={isLoading}
+            secureTextEntry={true}
+          />
+          <AppSubmitButton disabled={isLoading}>Login</AppSubmitButton>
+          <TextButton style={styles.textButton} onPress={handleRegisterPress}>
+            No account? Register here!
+          </TextButton>
+        </DefaultView>
+      </AppForm>
+      <StatusBar style="dark" />
+    </>
   );
 };
 
