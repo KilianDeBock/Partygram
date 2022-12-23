@@ -1,11 +1,8 @@
 import Icons from "@expo/vector-icons/MaterialCommunityIcons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Navigation } from "../../core/navigation";
-import { DefaultNavigatorOptions, Variables } from "../style";
-import { FavoritesNavigator } from "./Favorites.navigator";
-import { HomeNavigator } from "./Home.navigator";
-import { ProfileNavigator } from "./Profile.navigator";
-import { SearchNavigator } from "./Search.navigator";
+import { Navigation } from "../../../core/navigation";
+import { DefaultNavigatorOptions, Variables } from "../../style";
+import { GetAllNavigators } from "../navigators";
 
 const getTabIcon = (name, focused) => {
   let icon;
@@ -35,7 +32,7 @@ const getTabIcon = (name, focused) => {
     : `${icon}-outline`;
 };
 
-export const AppNavigator = () => {
+export const AppNavigator = ({ navigation }) => {
   const Tab = createBottomTabNavigator();
 
   return (
@@ -53,26 +50,7 @@ export const AppNavigator = () => {
         ...DefaultNavigatorOptions.screenOptions,
       })}
     >
-      <Tab.Screen
-        component={HomeNavigator}
-        name={Navigation.HOME}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
-        component={SearchNavigator}
-        name={Navigation.SEARCH}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
-        component={FavoritesNavigator}
-        name={Navigation.FAVORITES}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
-        component={ProfileNavigator}
-        name={Navigation.PROFILE}
-        options={{ headerShown: false }}
-      />
+      {GetAllNavigators(Tab, navigation)}
     </Tab.Navigator>
   );
 };

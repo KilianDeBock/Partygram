@@ -1,6 +1,6 @@
+import { useAuth } from "../../components/shared/Auth/AuthProvider.shared.component";
+import { AuthNavigator } from "../Auth/Auth.navigator";
 import { AppNavigator } from "./App.navigator";
-import { AuthNavigator } from "./Auth.navigator";
-import { useAuth } from "../components/shared/Auth/AuthProvider.shared.component";
 
 export const AppContent = () => {
   const { isLoggedIn } = useAuth();
