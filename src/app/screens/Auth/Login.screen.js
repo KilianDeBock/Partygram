@@ -14,7 +14,7 @@ import AppTextField from "../../components/shared/Form/AppTextField.shared.compo
 import { Variables } from "../../style";
 
 const schema = yup.object().shape({
-  email: yup.string().email().required(),
+  email: yup.string().email().matches("@(student.|)arteveldehs.be").required(),
   password: yup.string().required(),
 });
 
@@ -46,7 +46,7 @@ export const LoginScreen = ({ navigation }) => {
             label="Email"
             name="email"
             disabled={isLoading}
-            placeholder="john@doe.com"
+            placeholder="sancla@student.arteveldehs.be"
             autoComplete="email"
             keyboardType="email-address"
           />

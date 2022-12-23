@@ -8,9 +8,20 @@ import AppTextField from "../Form/AppTextField.shared.component";
 
 const getSchema = (options) => {
   return yup.object().shape({
-    email: yup.string().email().required(),
+    email: yup
+      .string()
+      .email()
+      .matches("@(student.|)arteveldehs.be")
+      .required(),
     ...(options.showPassword
-      ? { password: yup.string().min(8).required() }
+      ? {
+          password: yup.string().min(8).required(),
+          password_repeat: yup
+            .string()
+            .min(8)
+            .oneOf([yup.ref("password"), null], "Passwords must match")
+            .required(),
+        }
       : {}),
     first_name: yup.string().required(),
     last_name: yup.string().required(),
@@ -20,6 +31,7 @@ const getSchema = (options) => {
 const defaultValues = {
   email: "",
   password: "",
+  password_repeat: "",
   first_name: "",
   last_name: "",
 };
@@ -29,6 +41,7 @@ const defaultOptions = {
 };
 
 const UserForm = ({
+  children,
   initialValues = {},
   onSuccess,
   updateMethod,
@@ -61,12 +74,20 @@ const UserForm = ({
           disabled={isLoading}
         />
         {formOptions.showPassword && (
-          <AppTextField
-            name="password"
-            label="Password"
-            secureTextEntry={true}
-            disabled={isLoading}
-          />
+          <>
+            <AppTextField
+              name="password"
+              label="Password"
+              secureTextEntry={true}
+              disabled={isLoading}
+            />
+            <AppTextField
+              name="password_repeat"
+              label="Repeat Password"
+              secureTextEntry={true}
+              disabled={isLoading}
+            />
+          </>
         )}
         <AppTextField
           name="first_name"
@@ -75,6 +96,7 @@ const UserForm = ({
         />
         <AppTextField name="last_name" label="Last name" disabled={isLoading} />
         <AppSubmitButton disabled={isLoading}>{label}</AppSubmitButton>
+        {children}
       </View>
     </AppForm>
   );

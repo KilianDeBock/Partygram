@@ -1,19 +1,28 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet } from "react-native";
 import { register } from "../../../core/modules/auth/api";
+import { Navigation } from "../../../core/navigation";
+import TextButton from "../../components/design/Button/TextButton.design.component";
 import DefaultView from "../../components/design/View/DefaultView.design.component";
 import UserForm from "../../components/shared/User/UserForm.shared.component";
 import { Variables } from "../../style";
 
-export const RegisterScreen = () => {
+export const RegisterScreen = ({ navigation }) => {
   return (
     <>
       <DefaultView>
         <UserForm
           updateMethod={register}
-          onSuccess={() => {}}
+          onSuccess={() => navigation.navigate(Navigation.LOGIN)}
           label="Create account"
-        />
+        >
+          <TextButton
+            style={styles.textButton}
+            onPress={() => navigation.navigate(Navigation.LOGIN)}
+          >
+            Login instead
+          </TextButton>
+        </UserForm>
       </DefaultView>
       <StatusBar style="light" />
     </>
