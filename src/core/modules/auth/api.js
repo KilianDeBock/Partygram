@@ -24,19 +24,23 @@ export const login = async ({ email, password }) => {
 };
 
 export const register = async (body) => {
-  const { email, password, ...rest } = body;
-  const { data, error } = await supabase.auth.signUp({
+  const { email, password, password_repeat, ...profile } = body;
+  const { user, error } = await supabase.auth.signUp({
     email,
     password,
-    options: {
-      data: {
-        ...rest,
-      },
-    },
   });
   if (error) {
     return Promise.reject(error);
   }
+  await Promise.resolve(user);
+
+  const { data, error: error2 } = await supabase
+    .from("user_profiles")
+    .insert(profile);
+  if (error2) {
+    return Promise.reject(error2);
+  }
+
   return Promise.resolve(data);
 };
 

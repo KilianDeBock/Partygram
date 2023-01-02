@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { View } from "react-native";
 import * as yup from "yup";
 import ErrorMessage from "../../design/Text/ErrorMessage.design.component";
+import AppCheckboxField from "../Form/AppCheckboxField.shared.component";
 import AppForm from "../Form/AppForm.shared.component";
 import AppSubmitButton from "../Form/AppSubmitButton.shared.component";
 import AppTextField from "../Form/AppTextField.shared.component";
@@ -23,8 +24,9 @@ const getSchema = (options) => {
             .required(),
         }
       : {}),
-    first_name: yup.string().required(),
-    last_name: yup.string().required(),
+    username: yup.string().required(),
+    firstname: yup.string().required(),
+    lastname: yup.string().required(),
   });
 };
 
@@ -32,8 +34,9 @@ const defaultValues = {
   email: "",
   password: "",
   password_repeat: "",
-  first_name: "",
-  last_name: "",
+  username: "",
+  firstname: "",
+  lastname: "",
 };
 
 const defaultOptions = {
@@ -89,12 +92,18 @@ const UserForm = ({
             />
           </>
         )}
+        <AppTextField name="username" label="User name" disabled={isLoading} />
         <AppTextField
-          name="first_name"
+          name="firstname"
           label="First name"
           disabled={isLoading}
         />
-        <AppTextField name="last_name" label="Last name" disabled={isLoading} />
+        <AppTextField name="lastname" label="Last name" disabled={isLoading} />
+        <AppCheckboxField
+          name="accepted_agreement"
+          label=""
+          disabled={isLoading}
+        />
         <AppSubmitButton disabled={isLoading}>{label}</AppSubmitButton>
         {children}
       </View>

@@ -1,5 +1,5 @@
-import { createClient } from "@supabase/supabase-js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createClient } from "@supabase/supabase-js";
 import Constants from "expo-constants";
 
 const { SUPABASE_KEY, SUPABASE_URL } = Constants.manifest.extra;
@@ -15,14 +15,6 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
     persistSession: true,
   },
 });
-
-export const createAccount = async () => {
-  const { data, error } = await supabase.auth.signUp({
-    email: "michael.vanderpoorten@arteveldehs.be",
-    password: "testtest",
-  });
-  console.log(error);
-};
 
 export const AuthEvent = {
   SIGNED_IN: "SIGNED_IN",

@@ -1,6 +1,7 @@
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StatusBar } from "expo-status-bar";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import "react-native-url-polyfill/auto";
 import { AppContainer } from "./src/app/components/shared/App/AppContainer.shared.component";
 import { AuthProvider } from "./src/app/components/shared/Auth/AuthProvider.shared.component";
@@ -24,14 +25,16 @@ const queryClient = new QueryClient();
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AppContainer>
-        <AuthProvider>
-          <NavigationContainer theme={AppTheme}>
-            <AppContent />
-            <StatusBar style="dark" />
-          </NavigationContainer>
-        </AuthProvider>
-      </AppContainer>
+      <SafeAreaProvider>
+        <AppContainer>
+          <AuthProvider>
+            <NavigationContainer theme={AppTheme}>
+              <AppContent />
+              <StatusBar style="dark" />
+            </NavigationContainer>
+          </AuthProvider>
+        </AppContainer>
+      </SafeAreaProvider>
     </QueryClientProvider>
   );
 }
