@@ -5,6 +5,7 @@ import { AuthEvent, supabase } from "./supabase";
 const useSupabaseAuth = () => {
   const [isInitialized, setIsInitialized] = useState(false);
   const [auth, setAuth] = useState();
+  const [profile, setProfile] = useState();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -32,9 +33,24 @@ const useSupabaseAuth = () => {
     });
   }, []);
 
+  useEffect(() => {
+    // If no user or user id stop here.
+    if (!auth?.user?.id) return;
+    const getProfile = async () => {
+      const { data: profile, error } = await supabase
+        .from("user_profiles")
+        .select("*")
+        .eq("auth", auth?.user.id)
+        .single();
+
+      if (!error) setProfile(profile);
+    };
+    getProfile();
+  }, []);
+
   const user = useMemo(
-    () => (auth ? { ...auth.user, ...auth.user.user_metadata } : null),
-    [auth]
+    () => (!!auth && !!profile ? { ...auth.user, ...profile } : null),
+    [auth, profile]
   );
 
   const isLoggedIn = isInitialized && !!auth;
