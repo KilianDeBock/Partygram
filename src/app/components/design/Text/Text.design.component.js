@@ -1,7 +1,7 @@
 import { StyleSheet, Text as RNText } from "react-native";
 import { DefaultStyles, Variables } from "../../../style";
 
-const Text = ({ children, color = "default", style, ...props }) => {
+export const Text = ({ children, color = "default", style, ...props }) => {
   const dynamicStyle = {
     color:
       color === "light" ? Variables.colors.lightText : Variables.colors.text,

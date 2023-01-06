@@ -14,12 +14,12 @@ export const AllNavigators = [
     navigator: SearchNavigator,
   },
   {
-    name: Navigation.PROFILE,
-    navigator: ProfileNavigator,
-  },
-  {
     name: Navigation.FAVORITES,
     navigator: FavoritesNavigator,
+  },
+  {
+    name: Navigation.PROFILE,
+    navigator: ProfileNavigator,
   },
 ];
 

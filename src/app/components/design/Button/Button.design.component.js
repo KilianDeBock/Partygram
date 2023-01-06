@@ -2,7 +2,13 @@ import { Pressable, StyleSheet, View } from "react-native";
 import { Variables } from "../../../style";
 import Text from "../Text/Text.design.component";
 
-const Button = ({ onPress, children, style, color, disabled = false }) => {
+export const Button = ({
+  onPress,
+  children,
+  style,
+  color,
+  disabled = false,
+}) => {
   return (
     <Pressable
       disabled={disabled}
