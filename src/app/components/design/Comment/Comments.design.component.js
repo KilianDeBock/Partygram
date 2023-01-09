@@ -4,7 +4,7 @@ import { CommentDesignComponent } from "./Comment.design.component";
 export const CommentsDesignComponent = (props) => {
   return (
     <FlatList
-      data={["Heye", "Hello"]}
+      data={["Heye", "Hello", "lolZ"]}
       renderItem={({ item }) => <CommentDesignComponent style={styles.item} />}
     />
   );
