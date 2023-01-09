@@ -1,7 +1,7 @@
 import { FlatList } from "react-native";
 import Divider from "../../design/List/Divider.design.component";
-import DataView from "./DataView";
 import EmptyView from "../../design/View/EmptyView.design.component";
+import DataView from "./DataView.shared.component";
 
 const DataListView = ({
   name,
