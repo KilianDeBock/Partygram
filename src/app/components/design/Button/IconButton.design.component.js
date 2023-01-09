@@ -1,5 +1,5 @@
-import { Pressable } from "react-native";
 import Icons from "@expo/vector-icons/MaterialCommunityIcons";
+import { Pressable } from "react-native";
 import { Variables } from "../../../style";
 
 const IconButton = ({ icon, title, color, size, onPress }) => {
