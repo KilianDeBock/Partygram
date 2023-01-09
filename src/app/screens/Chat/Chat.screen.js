@@ -1,10 +1,10 @@
-import { View } from "react-native";
-import { Text } from "../../components/design";
+import { CommentsDesignComponent } from "../../components/design/Comment/Comments.design.component";
+import DefaultView from "../../components/design/View/DefaultView.design.component";
 
 export const ChatScreen = () => {
   return (
-    <View>
-      <Text>Chat Screen</Text>
-    </View>
+    <DefaultView>
+      <CommentsDesignComponent />
+    </DefaultView>
   );
 };

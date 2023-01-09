@@ -1,5 +1,6 @@
 import { Image, StyleSheet, View } from "react-native";
 import IconButton from "../Button/IconButton.design.component";
+import { CommentDesignComponent } from "../Comment/Comment.design.component";
 import Text from "../Text/Text.design.component";
 
 export const PostDesignComponent = (props) => {
@@ -11,16 +12,19 @@ export const PostDesignComponent = (props) => {
           uri: "https://cdn.britannica.com/18/137318-050-29F7072E/rooster-Rhode-Island-Red-roosters-chicken-domestication.jpg",
         }}
       />
-      <View style={styles.horizontal}>
-        <IconButton icon="heart-outline" />
-        <IconButton icon="comment-outline" />
-        <View style={styles.divider} />
-        <IconButton icon="bookmark-outline" />
-      </View>
-      <View style={styles.horizontal}>
-        <Text>10 likes</Text>
-        <View style={styles.divider} />
-        <Text>24/10</Text>
+      <View style={styles.content}>
+        <View style={styles.horizontal}>
+          <IconButton icon="heart-outline" />
+          <IconButton icon="comment-outline" />
+          <View style={styles.divider} />
+          <IconButton icon="bookmark-outline" />
+        </View>
+        <View style={styles.horizontal}>
+          <Text>10 likes</Text>
+          <View style={styles.divider} />
+          <Text>24/10</Text>
+        </View>
+        <CommentDesignComponent />
       </View>
     </View>
   );
@@ -29,6 +33,9 @@ export const PostDesignComponent = (props) => {
 const styles = StyleSheet.create({
   container: {
     paddingBottom: 20,
+  },
+  content: {
+    margin: 10,
   },
   image: {
     width: "100%",
