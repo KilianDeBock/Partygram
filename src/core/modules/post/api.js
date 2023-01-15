@@ -66,6 +66,18 @@ export const getMyPosts = async () => {
     .throwOnError();
 };
 
+export const getMyStories = async () => {
+  const userId = (await supabase.auth.getUser()).data.user.id;
+
+  return supabase
+    .from("posts")
+    .select("*")
+    .is("story", true)
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+    .throwOnError();
+};
+
 export const getPostById = async (id) => {
   return await supabase
     .from("posts")
