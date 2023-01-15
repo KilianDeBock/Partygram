@@ -11,7 +11,7 @@ export const SearchScreen = () => {
   const search = async (search) => {
     // Search
     const p = await searchPosts(search);
-    setPosts(p.data);
+    setPosts(p);
   };
 
   const handleOnChangeText = (text) => {

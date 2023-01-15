@@ -31,17 +31,31 @@ export const getPosts = async () => {
 };
 
 export const searchPosts = async (search) => {
-  return supabase
+  const { data: titles } = await supabase
+    .from("posts")
+    .select("*")
+    .ilike("title", `%${search}%`)
+    .order("created_at", { ascending: false })
+    .throwOnError();
+
+  const { data: descriptions } = await supabase
     .from("posts")
     .select("*")
     .ilike("description", `%${search}%`)
     .order("created_at", { ascending: false })
     .throwOnError();
+
+  const all = [...titles, ...descriptions];
+  return (
+    // Make a set of all the ids and convert it back to an array. (This removes duplicates)
+    [...new Set(all.map((i) => i.id))]
+      // Map the ids back to the original objects
+      .map((id) => all.find((i) => i.id === id))
+  );
 };
 
 export const getMyPosts = async () => {
   const userId = (await supabase.auth.getUser()).data.user.id;
-  console.log(userId);
 
   return supabase
     .from("posts")
