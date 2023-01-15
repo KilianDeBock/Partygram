@@ -30,6 +30,15 @@ export const getPosts = async () => {
     .throwOnError();
 };
 
+export const searchPosts = async (search) => {
+  return supabase
+    .from("posts")
+    .select("*")
+    .ilike("description", `%${search}%`)
+    .order("created_at", { ascending: false })
+    .throwOnError();
+};
+
 export const getMyPosts = async () => {
   const userId = (await supabase.auth.getUser()).data.user.id;
   console.log(userId);
