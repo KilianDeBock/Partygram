@@ -6,6 +6,11 @@ import Text from "../Text/Text.design.component";
 export const PostDesignComponent = ({ item }) => {
   return (
     <View style={styles.container}>
+      <View style={styles.line}></View>
+      <View>
+        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.description}>{item.description}</Text>
+      </View>
       <Image
         style={styles.image}
         source={{
@@ -46,5 +51,19 @@ const styles = StyleSheet.create({
   },
   divider: {
     flexGrow: 1,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  description: {
+    textAlign: "center",
+    marginBottom: 10,
+  },
+  line: {
+    height: 1,
+    backgroundColor: "#e0e0e0",
+    marginVertical: 10,
   },
 });
