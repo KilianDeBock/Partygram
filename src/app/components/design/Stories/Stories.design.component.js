@@ -1,19 +1,37 @@
-import { FlatList, StyleSheet } from "react-native";
-import IconButton from "../Button/IconButton.design.component";
+import { FlatList, StyleSheet, View } from "react-native";
 import { StoryDesignComponent } from "./Story.design.component";
+import { AddStoryDialog } from "../../shared/AddStoryDialog/AddStoryDialog.shared.component";
+import { useEffect, useState } from "react";
+import { getStories } from "../../../../core/modules/post/api";
 
-export const StoriesDesignComponent = ({ data }) => {
-  const image = {
-    uri: "https://cdn.britannica.com/18/137318-050-29F7072E/rooster-Rhode-Island-Red-roosters-chicken-domestication.jpg",
-  };
+export const StoriesDesignComponent = ({ onAddPost }) => {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      const r = await getStories();
+      setData(r.data);
+    };
+    getData();
+  }, []);
+
+  if (!data) return null;
+
   return (
-    <FlatList
-      data={["1", "2", "3", "4"]}
-      contentContainerStyle={styles.container}
-      horizontal
-      renderItem={({ item }) => <StoryDesignComponent image={image} />}
-      ListHeaderComponent={() => <IconButton size={40} icon="plus" />}
-    />
+    <View>
+      <FlatList
+        data={data}
+        contentContainerStyle={styles.container}
+        horizontal
+        renderItem={({ item }) => {
+          const image = {
+            uri: `https://jvrcjuipyagwvwalcpzo.supabase.co/storage/v1/object/public/posts/${item.image}`,
+          };
+          return <StoryDesignComponent image={image} />;
+        }}
+        ListHeaderComponent={() => <AddStoryDialog />}
+      />
+    </View>
   );
 };
 

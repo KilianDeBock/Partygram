@@ -6,7 +6,7 @@ export const FavoritesScreen = () => {
   return (
     <DefaultView padding={false}>
       <DataListView
-        name={["posts"]}
+        name={["posts-favorites"]}
         method={() => ({ data: ["1", "2", "3", "4", "5"] })}
         emptyTitle={"No posts"}
         emptyDescription={"You have no posts."}

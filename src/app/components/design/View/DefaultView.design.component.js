@@ -15,6 +15,7 @@ const DefaultView = ({ style, padding = true, children, ...props }) => {
 const styles = StyleSheet.create({
   view: {
     flex: 1,
+    justifyContent: "flex-start",
   },
   viewPadding: {
     paddingVertical: Variables.sizes.xl,

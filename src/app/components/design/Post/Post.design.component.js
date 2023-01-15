@@ -3,13 +3,13 @@ import IconButton from "../Button/IconButton.design.component";
 import { CommentDesignComponent } from "../Comment/Comment.design.component";
 import Text from "../Text/Text.design.component";
 
-export const PostDesignComponent = (props) => {
+export const PostDesignComponent = ({ item }) => {
   return (
     <View style={styles.container}>
       <Image
         style={styles.image}
         source={{
-          uri: "https://cdn.britannica.com/18/137318-050-29F7072E/rooster-Rhode-Island-Red-roosters-chicken-domestication.jpg",
+          uri: `https://jvrcjuipyagwvwalcpzo.supabase.co/storage/v1/object/public/posts/${item.image}`,
         }}
       />
       <View style={styles.content}>

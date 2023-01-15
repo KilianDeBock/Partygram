@@ -1,19 +1,23 @@
 import { FlatList, Image, StyleSheet, View } from "react-native";
+import { AddPostDialog } from "../../shared/AddPostDialog/AddPostDialog.shared.component";
 
-export const PostsGridDesignComponent = ({ posts }) => {
+export const PostsGridDesignComponent = ({ posts, addDialog = false }) => {
   return (
     <FlatList
       contentContainerStyle={styles.container}
       data={posts}
-      renderItem={({ item }) => (
-        <View style={styles.imageView}>
-          <Image
-            style={styles.image}
-            source={{
-              uri: "https://cdn.britannica.com/18/137318-050-29F7072E/rooster-Rhode-Island-Red-roosters-chicken-domestication.jpg",
-            }}
-          />
-        </View>
+      renderItem={({ item, index }) => (
+        <>
+          {addDialog && index === 0 && <AddPostDialog />}
+          <View style={styles.imageView}>
+            <Image
+              style={styles.image}
+              source={{
+                uri: `https://jvrcjuipyagwvwalcpzo.supabase.co/storage/v1/object/public/posts/${item.image}`,
+              }}
+            />
+          </View>
+        </>
       )}
       numColumns={3}
       keyExtractor={(item, index) => index.toString()}
@@ -33,5 +37,10 @@ const styles = StyleSheet.create({
     width: "31.6%",
     marginLeft: 5,
     marginBottom: 5,
+  },
+  pressView: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#e0e0e0",
   },
 });
