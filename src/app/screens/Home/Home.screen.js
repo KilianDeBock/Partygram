@@ -3,8 +3,9 @@ import DefaultView from "../../components/design/View/DefaultView.design.compone
 import DataListView from "../../components/shared/Data/DataListView.shared.component";
 import { StoriesDesignComponent } from "../../components/design/Stories/Stories.design.component";
 import { getPosts } from "../../../core/modules/post/api";
+import { Navigation } from "../../../core/navigation";
 
-export const HomeScreen = () => {
+export const HomeScreen = ({ navigation }) => {
   return (
     <DefaultView padding={false}>
       <StoriesDesignComponent />
@@ -14,6 +15,7 @@ export const HomeScreen = () => {
         emptyTitle={"No posts"}
         emptyDescription={"You have no posts."}
         emptyIcon="folder"
+        onAddItem={() => navigation.navigate(Navigation.PROFILE)}
         renderItem={({ item }) => <PostDesignComponent item={item} />}
       />
     </DefaultView>
