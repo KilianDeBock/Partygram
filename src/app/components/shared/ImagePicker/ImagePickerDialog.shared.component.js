@@ -37,6 +37,7 @@ const ImagePickerDialog = ({ onDismiss, onImage }) => {
       <ListDialog.Button onPress={() => handlePress("library")}>
         Choose picture
       </ListDialog.Button>
+      <ListDialog.Button onPress={onDismiss}>Cancel</ListDialog.Button>
     </ListDialog>
   );
 };
