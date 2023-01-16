@@ -11,6 +11,7 @@ import ImageAvatar from "../../design/Avatar/ImageAvatar.design.component";
 import ImagePickerDialog from "../../shared/ImagePicker/ImagePickerDialog.shared.component";
 import { useMutation } from "@tanstack/react-query";
 import isVoid from "../../../../core/utils/isVoid";
+import { supabase } from "../../../../core/api/supabase";
 
 export const ProfileSharedComponent = () => {
   const [data, setData] = useState({
@@ -60,6 +61,9 @@ export const ProfileSharedComponent = () => {
     }
   };
 
+  const publicUrl = supabase.storage.from("avatars").getPublicUrl(data.avatar)
+    .data.publicUrl;
+
   return (
     <View style={styles.container}>
       <Pressable onPress={() => setAddAvatarDialog(true)}>
@@ -71,8 +75,7 @@ export const ProfileSharedComponent = () => {
         ) : (
           <ImageAvatar
             source={{
-              // Todo make this dynamic
-              uri: `https://jvrcjuipyagwvwalcpzo.supabase.co/storage/v1/object/public/avatars/${data.avatar}`,
+              uri: publicUrl,
             }}
           />
         )}

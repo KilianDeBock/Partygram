@@ -11,7 +11,6 @@ const ErrorMessage = ({ error }) => {
   return null;
 };
 
-// todo
 const styles = StyleSheet.create({
   text: {
     width: "100%",

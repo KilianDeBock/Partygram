@@ -1,5 +1,6 @@
 import { FlatList, Image, StyleSheet, View } from "react-native";
 import { AddPostDialog } from "../../shared/AddPostDialog/AddPostDialog.shared.component";
+import { supabase } from "../../../../core/api/supabase";
 
 export const PostsGridDesignComponent = ({ posts, addDialog = false }) => {
   const list = posts.length < 1 ? [{ id: 0 }] : posts;
@@ -9,21 +10,27 @@ export const PostsGridDesignComponent = ({ posts, addDialog = false }) => {
     <FlatList
       contentContainerStyle={styles.container}
       data={list}
-      renderItem={({ item, index }) => (
-        <>
-          {addDialog && index === 0 && <AddPostDialog />}
-          {!listEmpty && (
-            <View style={styles.imageView}>
-              <Image
-                style={styles.image}
-                source={{
-                  uri: `https://jvrcjuipyagwvwalcpzo.supabase.co/storage/v1/object/public/posts/${item.image}`,
-                }}
-              />
-            </View>
-          )}
-        </>
-      )}
+      renderItem={({ item, index }) => {
+        const publicUrl = supabase.storage
+          .from("posts")
+          .getPublicUrl(item.image).data.publicUrl;
+
+        return (
+          <>
+            {addDialog && index === 0 && <AddPostDialog />}
+            {!listEmpty && (
+              <View style={styles.imageView}>
+                <Image
+                  style={styles.image}
+                  source={{
+                    uri: publicUrl,
+                  }}
+                />
+              </View>
+            )}
+          </>
+        );
+      }}
       numColumns={3}
       keyExtractor={(item, index) => index.toString()}
     />
