@@ -27,6 +27,7 @@ export const ProfileSettingsScreen = ({ navigation }) => {
   const [profile, setProfile] = useState(null);
   const { mutate, isLoading, isError, error } = useMutation(updateUserProfile);
 
+  // todo make use query
   useEffect(() => {
     const getProfile = async () => {
       const p = await getMe();

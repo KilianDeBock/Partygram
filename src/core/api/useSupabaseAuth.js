@@ -33,6 +33,7 @@ const useSupabaseAuth = () => {
     });
   }, []);
 
+  // Todo (maybe) make useQuery
   useEffect(() => {
     // If no user or user id stop here.
     if (!auth?.user?.id) return;

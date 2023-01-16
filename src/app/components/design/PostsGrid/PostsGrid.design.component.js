@@ -1,6 +1,6 @@
 import { FlatList, Image, StyleSheet, View } from "react-native";
 import { AddPostDialog } from "../../shared/AddPostDialog/AddPostDialog.shared.component";
-import { supabase } from "../../../../core/api/supabase";
+import { getPublicUrl } from "../../../../core/modules/files/utils";
 
 export const PostsGridDesignComponent = ({ posts, addDialog = false }) => {
   const list = posts.length < 1 ? [{ id: 0 }] : posts;
@@ -11,9 +11,7 @@ export const PostsGridDesignComponent = ({ posts, addDialog = false }) => {
       contentContainerStyle={styles.container}
       data={list}
       renderItem={({ item, index }) => {
-        const publicUrl = supabase.storage
-          .from("posts")
-          .getPublicUrl(item.image).data.publicUrl;
+        const publicUrl = getPublicUrl("posts", item.image);
 
         return (
           <>

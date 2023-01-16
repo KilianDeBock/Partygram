@@ -11,7 +11,7 @@ import ImageAvatar from "../../design/Avatar/ImageAvatar.design.component";
 import ImagePickerDialog from "../../shared/ImagePicker/ImagePickerDialog.shared.component";
 import { useMutation } from "@tanstack/react-query";
 import isVoid from "../../../../core/utils/isVoid";
-import { supabase } from "../../../../core/api/supabase";
+import { getPublicUrl } from "../../../../core/modules/files/utils";
 
 export const ProfileSharedComponent = () => {
   const [data, setData] = useState({
@@ -33,6 +33,7 @@ export const ProfileSharedComponent = () => {
     }
   }, [isError]);
 
+  // Todo make one query and use useQuery
   useEffect(() => {
     const getData = async () => {
       const { data: posts } = await getMyPosts();
@@ -61,8 +62,7 @@ export const ProfileSharedComponent = () => {
     }
   };
 
-  const publicUrl = supabase.storage.from("avatars").getPublicUrl(data.avatar)
-    .data.publicUrl;
+  const publicUrl = getPublicUrl("avatars", data.avatar);
 
   return (
     <View style={styles.container}>

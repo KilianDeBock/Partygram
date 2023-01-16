@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 export const ProfileScreen = () => {
   const [data, setData] = useState(null);
 
+  // todo: make useQuery
   useEffect(() => {
     const getData = async () => {
       const r = await getMyPosts();
