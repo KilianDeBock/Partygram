@@ -37,6 +37,7 @@ export const StoriesDesignComponent = ({ onAddPost }) => {
 
 const styles = StyleSheet.create({
   container: {
+    height: 80,
     alignItems: "center",
   },
 });

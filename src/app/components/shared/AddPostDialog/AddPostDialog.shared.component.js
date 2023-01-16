@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
   },
   imageView: {
     width: "31.6%",
+    aspectRatio: 1,
     marginLeft: 5,
     marginBottom: 5,
   },
