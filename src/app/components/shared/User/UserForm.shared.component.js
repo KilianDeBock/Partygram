@@ -27,6 +27,10 @@ const getSchema = (options) => {
     username: yup.string().required(),
     firstname: yup.string().required(),
     lastname: yup.string().required(),
+    accepted_agreement: yup
+      .bool()
+      .oneOf([true], "Field must be checked")
+      .required(),
   });
 };
 
@@ -101,7 +105,7 @@ const UserForm = ({
         <AppTextField name="lastname" label="Last name" disabled={isLoading} />
         <AppCheckboxField
           name="accepted_agreement"
-          label=""
+          label="Do you accept the terms and conditions?"
           disabled={isLoading}
         />
         <AppSubmitButton disabled={isLoading}>{label}</AppSubmitButton>
