@@ -115,7 +115,7 @@ export const createPost = async (body) => {
 };
 
 export const createStory = async (body) => {
-  let { postFile } = body;
+  let { postFile, location } = body;
 
   const {
     data: { user },
@@ -127,6 +127,7 @@ export const createStory = async (body) => {
   const { error } = await supabase.from("posts").insert({
     story: true,
     image: fileName,
+    location,
   });
 
   if (error) {
@@ -140,4 +141,29 @@ export const updatePost = async (post) => {
     .update(post)
     .eq("id", post.id)
     .throwOnError();
+};
+
+export const likeOrPinPost = async (id, { liked, pinned }) => {
+  const { error } = await supabase
+    .from("user_post")
+    .select("*")
+    .eq("post", id)
+    .single();
+
+  if (error) {
+    return await supabase
+      .from("user_post")
+      .insert({
+        story: true,
+        image: fileName,
+        location,
+      })
+      .throwOnError();
+  } else {
+    return await supabase
+      .from("user_post")
+      .update(post)
+      .eq("post", id)
+      .throwOnError();
+  }
 };
