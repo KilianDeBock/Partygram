@@ -32,18 +32,19 @@ export const getMe = async () => {
 
 export const updateUserProfile = async (body) => {
   let { postFile, ...rest } = body;
+  const userId = (await supabase.auth.getUser()).data.user.id;
+  const data = { ...rest };
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const fileName = `${user.id}/${Date.now()}.png`;
-  await uploadImage(Bucket.Avatars, fileName, postFile);
+  if (!!postFile) {
+    const fileName = `${userId}/${Date.now()}.png`;
+    await uploadImage(Bucket.Avatars, fileName, postFile);
+    data.avatar = fileName;
+  }
 
   const { error } = await supabase
     .from("user_profiles")
-    .update({ ...rest, avatar: fileName })
-    .eq("auth", user.id)
+    .update(data)
+    .eq("auth", userId)
     .throwOnError();
 
   if (error) {

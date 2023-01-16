@@ -13,6 +13,7 @@ export const Navigation = Object.freeze({
 
   PROFILE: "Profile",
   PROFILE_OVERVIEW: "ProfileOverview",
+  PROFILE_SETTINGS: "ProfileSettings",
 
   CHAT: "Chat",
 });

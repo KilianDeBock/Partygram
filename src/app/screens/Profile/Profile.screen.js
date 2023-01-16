@@ -15,7 +15,7 @@ export const ProfileScreen = () => {
     void getData();
   }, []);
 
-  if (!data || data.length < 1) return null;
+  if (!data) return null;
 
   return (
     <DefaultView padding={false}>
