@@ -3,6 +3,8 @@ import { uploadImage } from "../files/api";
 import { Bucket } from "../files/constants";
 
 export const getStories = async () => {
+  const userId = (await supabase.auth.getUser()).data.user.id;
+
   const date = new Date();
   date.setHours(date.getHours() - 24);
   const dateString = date.toISOString();
@@ -10,6 +12,7 @@ export const getStories = async () => {
   return supabase
     .from("posts")
     .select("*")
+    .neq("user_id", userId)
     .is("story", true)
     .gt("created_at", dateString)
     .order("created_at", { ascending: false })
@@ -17,6 +20,8 @@ export const getStories = async () => {
 };
 
 export const getPosts = async () => {
+  const userId = (await supabase.auth.getUser()).data.user.id;
+
   const date = new Date();
   date.setHours(date.getHours() - 24);
   const dateString = date.toISOString();
@@ -24,6 +29,7 @@ export const getPosts = async () => {
   return supabase
     .from("posts")
     .select("*")
+    .neq("user_id", userId)
     .is("story", false)
     .gt("created_at", dateString)
     .order("created_at", { ascending: false })
