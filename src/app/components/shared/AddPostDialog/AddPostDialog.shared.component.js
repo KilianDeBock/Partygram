@@ -10,6 +10,8 @@ import AppForm from "../Form/AppForm.shared.component";
 import AppTextField from "../Form/AppTextField.shared.component";
 import AppSubmitButton from "../Form/AppSubmitButton.shared.component";
 
+import * as Location from "expo-location";
+
 export const AddPostDialog = () => {
   const [addPostImageDialog, setAddPostImageDialog] = useState(false);
   const [addPostDialog, setAddPostDialog] = useState(false);
@@ -36,12 +38,18 @@ export const AddPostDialog = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    let location = "Planet Earth";
+    if (status === "granted") {
+      location = await Location.getCurrentPositionAsync({});
+    }
+
     setAddPostDialog(false);
 
     mutate({
       postFile: image,
-      location: "Budapest",
+      location,
       ...e,
     });
   };

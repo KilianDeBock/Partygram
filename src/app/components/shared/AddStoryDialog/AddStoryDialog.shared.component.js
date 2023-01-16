@@ -7,6 +7,8 @@ import { createStory } from "../../../../core/modules/post/api";
 import { StyleSheet, View } from "react-native";
 import { Variables } from "../../../style";
 
+import * as Location from "expo-location";
+
 export const AddStoryDialog = () => {
   const [addStoryDialog, setAddStoryDialog] = useState(false);
   const { mutate, isLoading, isError, error } = useMutation((story) =>
@@ -19,11 +21,17 @@ export const AddStoryDialog = () => {
     }
   }, [isError]);
 
-  const handleImage = (base64) => {
+  const handleImage = async (base64) => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    let location = "Planet Earth";
+    if (status === "granted") {
+      location = await Location.getCurrentPositionAsync({});
+    }
+
     if (!isVoid(base64)) {
-      console.log(base64);
       mutate({
         postFile: base64,
+        location,
       });
     }
   };
