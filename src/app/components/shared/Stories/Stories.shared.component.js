@@ -1,12 +1,13 @@
 import { FlatList, StyleSheet, View } from "react-native";
-import { StoryDesignComponent } from "./Story.design.component";
-import { AddStoryDialog } from "../../shared/AddStoryDialog/AddStoryDialog.shared.component";
+import { StoryDesignComponent } from "../../design/Stories/Story.design.component";
+import { AddStoryDialog } from "../AddStoryDialog/AddStoryDialog.shared.component";
 import { useEffect, useState } from "react";
 import { getStories } from "../../../../core/modules/post/api";
 
-export const StoriesDesignComponent = ({ onAddPost }) => {
+export const StoriesSharedComponent = ({ onAddPost }) => {
   const [data, setData] = useState(null);
 
+  // Todo get data the right way!
   useEffect(() => {
     const getData = async () => {
       const r = await getStories();

@@ -1,18 +1,18 @@
 import { Pressable, StyleSheet, View } from "react-native";
-import Text from "../Text/Text.design.component";
+import Text from "../../design/Text/Text.design.component";
 import { useEffect, useState } from "react";
 import { getMyPosts, getMyStories } from "../../../../core/modules/post/api";
 import {
   getMe,
   updateUserProfile,
 } from "../../../../core/modules/userProfile/api";
-import TextAvatar from "../Avatar/TextAvatar.design.component";
-import ImageAvatar from "../Avatar/ImageAvatar.design.component";
+import TextAvatar from "../../design/Avatar/TextAvatar.design.component";
+import ImageAvatar from "../../design/Avatar/ImageAvatar.design.component";
 import ImagePickerDialog from "../../shared/ImagePicker/ImagePickerDialog.shared.component";
 import { useMutation } from "@tanstack/react-query";
 import isVoid from "../../../../core/utils/isVoid";
 
-export const ProfileDesignComponent = () => {
+export const ProfileSharedComponent = () => {
   const [data, setData] = useState({
     firstname: "John",
     lastname: "Doe",
@@ -71,6 +71,7 @@ export const ProfileDesignComponent = () => {
         ) : (
           <ImageAvatar
             source={{
+              // Todo make this dynamic
               uri: `https://jvrcjuipyagwvwalcpzo.supabase.co/storage/v1/object/public/avatars/${data.avatar}`,
             }}
           />

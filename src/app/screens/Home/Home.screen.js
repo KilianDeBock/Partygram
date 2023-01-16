@@ -1,14 +1,14 @@
 import { PostDesignComponent } from "../../components/design/Post/Post.design.component";
 import DefaultView from "../../components/design/View/DefaultView.design.component";
 import DataListView from "../../components/shared/Data/DataListView.shared.component";
-import { StoriesDesignComponent } from "../../components/design/Stories/Stories.design.component";
+import { StoriesSharedComponent } from "../../components/shared/Stories/Stories.shared.component";
 import { getPosts } from "../../../core/modules/post/api";
 import { Navigation } from "../../../core/navigation";
 
 export const HomeScreen = ({ navigation }) => {
   return (
     <DefaultView padding={false}>
-      <StoriesDesignComponent />
+      <StoriesSharedComponent />
       <DataListView
         name={["posts"]}
         method={getPosts}
