@@ -6,7 +6,8 @@ import { useEffect, useState } from "react";
 import { getPublicUrl } from "../../../core/modules/files/utils";
 import { Navigation } from "../../../core/navigation";
 
-export const StoryScreen = ({ navigation }) => {
+export const StoryScreen = ({ route, navigation }) => {
+  const { index } = route.params;
   const { data } = useQuery(["stories"], getStories);
   const [image, setImage] = useState(null);
   const [timeLeft, setTimeLeft] = useState(5);
@@ -15,7 +16,7 @@ export const StoryScreen = ({ navigation }) => {
 
   useEffect(() => {
     let timeout;
-    let ind = 0;
+    let ind = index ?? 0;
     const nextImage = (item) => {
       const img = { uri: getPublicUrl("posts", item.image) };
       setImage(img);
@@ -30,7 +31,7 @@ export const StoryScreen = ({ navigation }) => {
         }
       }, 5000);
     };
-    nextImage(data.data[0]);
+    nextImage(data.data[ind]);
     const interval = setInterval(() => {
       setTimeLeft((timeLeft) => timeLeft - 1);
     }, 1000);

@@ -18,7 +18,7 @@ export const StoriesSharedComponent = ({ onAddPost }) => {
         data={data.data}
         contentContainerStyle={styles.container}
         horizontal
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           const publicUrl = getPublicUrl("posts", item.image);
 
           const image = {
@@ -27,7 +27,7 @@ export const StoriesSharedComponent = ({ onAddPost }) => {
           return (
             <StoryDesignComponent
               image={image}
-              onPress={() => navigation.navigate(Navigation.STORY)}
+              onPress={() => navigation.navigate(Navigation.STORY, { index })}
             />
           );
         }}
