@@ -9,7 +9,7 @@ export const getStories = async () => {
   date.setHours(date.getHours() - 24);
   const dateString = date.toISOString();
 
-  return supabase
+  const { data } = await supabase
     .from("posts")
     .select("*")
     .neq("user_id", userId)
@@ -17,6 +17,18 @@ export const getStories = async () => {
     .gt("created_at", dateString)
     .order("created_at", { ascending: false })
     .throwOnError();
+
+  const stories = data ?? [];
+
+  if (stories.length < 1) {
+    return { data: [] };
+  }
+
+  const filtered = [...new Set(stories.map((i) => i.user_id))].map((id) =>
+    stories.find((i) => i.user_id === id)
+  );
+
+  return { data: filtered };
 };
 
 export const getPosts = async () => {

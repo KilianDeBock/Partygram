@@ -1,27 +1,18 @@
 import { PostsGridDesignComponent } from "../../components/design/PostsGrid/PostsGrid.design.component";
-import { ProfileDesignComponent } from "../../components/design/Profile/Profile.design.component";
+import { ProfileSharedComponent } from "../../components/shared/Profile/Profile.shared.component";
 import DefaultView from "../../components/design/View/DefaultView.design.component";
 import { getMyPosts } from "../../../core/modules/post/api";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 export const ProfileScreen = () => {
-  const [data, setData] = useState(null);
-
-  // todo: make useQuery
-  useEffect(() => {
-    const getData = async () => {
-      const r = await getMyPosts();
-      setData(r.data);
-    };
-    void getData();
-  }, []);
-
-  if (!data) return null;
+  const { data } = useQuery(["myPosts"], getMyPosts);
+  if (!data || !data?.data || data.error) return null;
+  const posts = data?.data;
 
   return (
     <DefaultView padding={false}>
-      <ProfileDesignComponent />
-      <PostsGridDesignComponent posts={data} addDialog />
+      <ProfileSharedComponent />
+      <PostsGridDesignComponent posts={posts} addDialog />
     </DefaultView>
   );
 };

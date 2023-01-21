@@ -3,6 +3,7 @@ import Text from "../../design/Text/Text.design.component";
 import { useEffect, useState } from "react";
 import { getMyPosts, getMyStories } from "../../../../core/modules/post/api";
 import {
+  getFullProfile,
   getMe,
   updateUserProfile,
 } from "../../../../core/modules/userProfile/api";
@@ -36,6 +37,7 @@ export const ProfileSharedComponent = () => {
   // Todo make one query and use useQuery
   useEffect(() => {
     const getData = async () => {
+      await getFullProfile();
       const { data: posts } = await getMyPosts();
       const { data: stories } = await getMyStories();
       const { data: user } = await getMe();

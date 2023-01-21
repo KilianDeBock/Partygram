@@ -10,12 +10,11 @@ import Title from "../../components/design/Text/Title.design.component";
 import { StyleSheet } from "react-native";
 import { Variables } from "../../style";
 import { Navigation } from "../../../core/navigation";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   getMe,
   updateUserProfile,
 } from "../../../core/modules/userProfile/api";
-import { useEffect, useState } from "react";
 
 const schema = yup.object().shape({
   firstname: yup.string().required(),
@@ -23,20 +22,12 @@ const schema = yup.object().shape({
   username: yup.string().required(),
 });
 
-export const ProfileSettingsScreen = ({ navigation }) => {
-  const [profile, setProfile] = useState(null);
-  const { mutate, isLoading, isError, error } = useMutation(updateUserProfile);
+export const ProfileSettingsScreen = ({navigation}) => {
+  const {mutate, isLoading, isError, error} = useMutation(updateUserProfile);
 
-  // todo make use query
-  useEffect(() => {
-    const getProfile = async () => {
-      const p = await getMe();
-      setProfile(p.data);
-    };
-    void getProfile();
-  }, []);
-
-  if (!profile) return null;
+  const {data} = useQuery(["profile"], getMe);
+  if (!data || !data?.data || data.error) return null;
+  const profile = data?.data;
 
   const handleSubmit = async (values) => {
     mutate(values);
@@ -59,7 +50,7 @@ export const ProfileSettingsScreen = ({ navigation }) => {
       >
         <DefaultView style={styles.container}>
           <Title style={styles.title}>Account Settings</Title>
-          {isError && <ErrorMessage error={error} />}
+          {isError && <ErrorMessage error={error}/>}
           <AppTextField
             label="Firstname"
             name="firstname"
