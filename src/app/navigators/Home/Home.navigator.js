@@ -1,7 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Navigation } from "../../../core/navigation";
 import HeaderButton from "../../components/design/Button/HeaderButton.design.component";
-import { ChatScreen } from "../../screens/Chat/Chat.screen";
 import { HomeScreen } from "../../screens/Home/Home.screen";
 import { DefaultNavigatorOptions } from "../../style";
 import { GetAllSubScreens } from "../subScreens";
@@ -23,7 +22,6 @@ export const HomeNavigator = ({ navigation }) => (
         ),
       }}
     />
-    <Stack.Screen component={ChatScreen} name={Navigation.CHAT} />
     {GetAllSubScreens(Stack, navigation)}
   </Stack.Navigator>
 );

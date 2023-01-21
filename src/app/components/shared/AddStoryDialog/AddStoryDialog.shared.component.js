@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import isVoid from "../../../../core/utils/isVoid";
 import ImagePickerDialog from "../ImagePicker/ImagePickerDialog.shared.component";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import IconButton from "../../design/Button/IconButton.design.component";
 import { createStory } from "../../../../core/modules/post/api";
 import { StyleSheet, View } from "react-native";
@@ -11,6 +11,7 @@ import * as Location from "expo-location";
 
 export const AddStoryDialog = () => {
   const [addStoryDialog, setAddStoryDialog] = useState(false);
+  const queryClient = useQueryClient();
   const { mutate, isLoading, isError, error } = useMutation((story) =>
     createStory(story)
   );
@@ -33,6 +34,7 @@ export const AddStoryDialog = () => {
         postFile: base64,
         location,
       });
+      await queryClient.invalidateQueries(["stories", "posts"]);
     }
   };
 

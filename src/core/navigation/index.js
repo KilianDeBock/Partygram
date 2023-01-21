@@ -4,6 +4,7 @@ export const Navigation = Object.freeze({
 
   HOME: "Home",
   HOME_OVERVIEW: "HomeOverview",
+  STORY: "Story",
 
   SEARCH: "Search",
   SEARCH_OVERVIEW: "SearchOverview",

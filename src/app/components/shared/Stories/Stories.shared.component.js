@@ -4,8 +4,11 @@ import { AddStoryDialog } from "../AddStoryDialog/AddStoryDialog.shared.componen
 import { getStories } from "../../../../core/modules/post/api";
 import { useQuery } from "@tanstack/react-query";
 import { getPublicUrl } from "../../../../core/modules/files/utils";
+import { Navigation } from "../../../../core/navigation";
+import { useNavigation } from "@react-navigation/native";
 
 export const StoriesSharedComponent = ({ onAddPost }) => {
+  const navigation = useNavigation();
   const { data } = useQuery(["stories"], getStories);
   if (!data || !data.data || data.error) return null;
 
@@ -21,7 +24,12 @@ export const StoriesSharedComponent = ({ onAddPost }) => {
           const image = {
             uri: publicUrl,
           };
-          return <StoryDesignComponent image={image} />;
+          return (
+            <StoryDesignComponent
+              image={image}
+              onPress={() => navigation.navigate(Navigation.STORY)}
+            />
+          );
         }}
         ListHeaderComponent={() => <AddStoryDialog />}
       />
