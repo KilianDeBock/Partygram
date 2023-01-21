@@ -12,8 +12,11 @@ import * as Location from "expo-location";
 export const AddStoryDialog = () => {
   const [addStoryDialog, setAddStoryDialog] = useState(false);
   const queryClient = useQueryClient();
-  const { mutate, isLoading, isError, error } = useMutation((story) =>
-    createStory(story)
+  const { mutate, isLoading, isError, error } = useMutation(
+    (story) => createStory(story),
+    {
+      onSuccess: () => queryClient.invalidateQueries(["stories"]),
+    }
   );
 
   useEffect(() => {
@@ -30,11 +33,10 @@ export const AddStoryDialog = () => {
     }
 
     if (!isVoid(base64)) {
-      mutate({
+      await mutate({
         postFile: base64,
         location,
       });
-      await queryClient.invalidateQueries(["stories", "posts"]);
     }
   };
 

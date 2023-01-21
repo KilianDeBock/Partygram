@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ImagePickerDialog from "../ImagePicker/ImagePickerDialog.shared.component";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import IconButton from "../../design/Button/IconButton.design.component";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import { createPost } from "../../../../core/modules/post/api";
@@ -13,11 +13,15 @@ import AppSubmitButton from "../Form/AppSubmitButton.shared.component";
 import * as Location from "expo-location";
 
 export const AddPostDialog = () => {
+  const queryClient = useQueryClient();
   const [addPostImageDialog, setAddPostImageDialog] = useState(false);
   const [addPostDialog, setAddPostDialog] = useState(false);
   const [image, setImage] = useState("");
-  const { mutate, isLoading, isError, error } = useMutation((post) =>
-    createPost(post)
+  const { mutate, isLoading, isError, error } = useMutation(
+    (post) => createPost(post),
+    {
+      onSuccess: () => queryClient.invalidateQueries(["myPosts"]),
+    }
   );
 
   useEffect(() => {
@@ -47,7 +51,7 @@ export const AddPostDialog = () => {
 
     setAddPostDialog(false);
 
-    mutate({
+    await mutate({
       postFile: image,
       location,
       ...e,

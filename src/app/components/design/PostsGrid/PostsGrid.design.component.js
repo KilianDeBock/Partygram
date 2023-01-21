@@ -2,7 +2,11 @@ import { FlatList, Image, StyleSheet, View } from "react-native";
 import { AddPostDialog } from "../../shared/AddPostDialog/AddPostDialog.shared.component";
 import { getPublicUrl } from "../../../../core/modules/files/utils";
 
-export const PostsGridDesignComponent = ({ posts, addDialog = false }) => {
+export const PostsGridDesignComponent = ({
+  posts,
+  refreshControl,
+  addDialog = false,
+}) => {
   const list = posts.length < 1 ? [{ id: 0 }] : posts;
   const listEmpty = posts.length < 1;
 
@@ -31,6 +35,7 @@ export const PostsGridDesignComponent = ({ posts, addDialog = false }) => {
       }}
       numColumns={3}
       keyExtractor={(item, index) => index.toString()}
+      refreshControl={refreshControl}
     />
   );
 };

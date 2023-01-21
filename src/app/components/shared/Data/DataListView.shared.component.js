@@ -11,6 +11,7 @@ const DataListView = ({
   emptyDescription,
   emptyIcon,
   onAddItem,
+  refreshControl,
 }) => {
   return (
     <DataView
@@ -30,6 +31,7 @@ const DataListView = ({
             data={data}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
+            refreshControl={refreshControl}
           />
         )
       }
