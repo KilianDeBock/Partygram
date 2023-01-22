@@ -18,8 +18,11 @@ export const ProfileSharedComponent = () => {
   const { data } = useQuery(["profile"], getFullProfile);
 
   const [addAvatarDialog, setAddAvatarDialog] = useState(false);
-  const { mutate, isLoading, isError, error } = useMutation((profile) =>
-    updateUserProfile(profile)
+  const { mutate, isLoading, isError, error } = useMutation(
+    (profile) => updateUserProfile(profile),
+    {
+      onSuccess: () => queryClient.invalidateQueries(["profile"]),
+    }
   );
 
   useEffect(() => {

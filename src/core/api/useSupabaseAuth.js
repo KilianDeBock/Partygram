@@ -1,11 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import { getCurrentSession } from "../modules/auth/api";
 import { AuthEvent, supabase } from "./supabase";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getFullProfile } from "../modules/userProfile/api";
 
 const useSupabaseAuth = () => {
+  const queryClient = useQueryClient();
   const [isInitialized, setIsInitialized] = useState(false);
   const [auth, setAuth] = useState();
-  const [profile, setProfile] = useState();
+  const { data } = useQuery(["profile"], getFullProfile);
+  const profile = data?.data;
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -23,30 +27,16 @@ const useSupabaseAuth = () => {
         case AuthEvent.USER_UPDATED:
         case AuthEvent.TOKEN_REFRESHED:
           setAuth(session);
+          queryClient.invalidateQueries(["profile"]);
           break;
 
         case AuthEvent.SIGNED_OUT:
         case AuthEvent.USER_DELETED:
           setAuth(null);
+          queryClient.invalidateQueries(["profile"]);
           break;
       }
     });
-  }, []);
-
-  // Todo (maybe) make useQuery
-  useEffect(() => {
-    // If no user or user id stop here.
-    if (!auth?.user?.id) return;
-    const getProfile = async () => {
-      const { data: profile, error } = await supabase
-        .from("user_profiles")
-        .select("*")
-        .eq("auth", auth?.user.id)
-        .single();
-
-      if (!error) setProfile(profile);
-    };
-    getProfile();
   }, []);
 
   const user = useMemo(
