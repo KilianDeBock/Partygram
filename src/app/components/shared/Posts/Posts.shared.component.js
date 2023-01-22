@@ -52,6 +52,8 @@ export const PostsSharedComponent = ({
     await queryClient.invalidateQueries(["posts"]);
     const d = await getPosts();
     setData(d.data ?? []);
+    setLastHeight(0);
+    setLastDataLength(0);
     setRefreshing(false);
   };
 
