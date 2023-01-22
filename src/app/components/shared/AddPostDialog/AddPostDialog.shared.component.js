@@ -12,7 +12,7 @@ import AppSubmitButton from "../Form/AppSubmitButton.shared.component";
 
 import * as Location from "expo-location";
 
-export const AddPostDialog = ({ openDialog = false }) => {
+export const AddPostDialog = ({ openDialog = false, onClose = () => {} }) => {
   const queryClient = useQueryClient();
   const [addPostImageDialog, setAddPostImageDialog] = useState(openDialog);
   const [addPostDialog, setAddPostDialog] = useState(false);
@@ -50,6 +50,7 @@ export const AddPostDialog = ({ openDialog = false }) => {
     }
 
     setAddPostDialog(false);
+    onClose();
 
     await mutate({
       postFile: image,
@@ -60,17 +61,22 @@ export const AddPostDialog = ({ openDialog = false }) => {
 
   return (
     <>
-      <Pressable style={[styles.imageView, styles.pressView]}>
-        <IconButton
-          style={styles.image}
-          onPress={onAddPost}
-          size={80}
-          icon="plus"
-        />
-      </Pressable>
+      {!openDialog && (
+        <Pressable style={[styles.imageView, styles.pressView]}>
+          <IconButton
+            style={styles.image}
+            onPress={onAddPost}
+            size={80}
+            icon="plus"
+          />
+        </Pressable>
+      )}
       {addPostImageDialog && (
         <ImagePickerDialog
-          onDismiss={() => setAddPostImageDialog(false)}
+          onDismiss={() => {
+            setAddPostImageDialog(false);
+            onClose();
+          }}
           onImage={handleImage}
         />
       )}
