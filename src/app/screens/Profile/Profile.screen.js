@@ -6,7 +6,9 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { RefreshControl } from "react-native";
 
-export const ProfileScreen = () => {
+export const ProfileScreen = ({ route, navigation }) => {
+  const p = route.params;
+  const upload = p?.upload ?? false;
   const queryClient = useQueryClient();
   const [refreshing, setRefreshing] = useState(false);
   const { data } = useQuery(["myPosts"], getMyPosts);
@@ -27,6 +29,7 @@ export const ProfileScreen = () => {
     <DefaultView padding={false}>
       <ProfileSharedComponent />
       <PostsGridDesignComponent
+        openDialog={upload}
         posts={posts}
         addDialog
         refreshControl={

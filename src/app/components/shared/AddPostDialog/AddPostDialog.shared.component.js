@@ -12,9 +12,9 @@ import AppSubmitButton from "../Form/AppSubmitButton.shared.component";
 
 import * as Location from "expo-location";
 
-export const AddPostDialog = () => {
+export const AddPostDialog = ({ openDialog = false }) => {
   const queryClient = useQueryClient();
-  const [addPostImageDialog, setAddPostImageDialog] = useState(false);
+  const [addPostImageDialog, setAddPostImageDialog] = useState(openDialog);
   const [addPostDialog, setAddPostDialog] = useState(false);
   const [image, setImage] = useState("");
   const { mutate, isLoading, isError, error } = useMutation(

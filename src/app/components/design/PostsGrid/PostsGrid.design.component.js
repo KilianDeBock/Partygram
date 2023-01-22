@@ -6,6 +6,7 @@ export const PostsGridDesignComponent = ({
   posts,
   refreshControl,
   addDialog = false,
+  openDialog = false,
 }) => {
   const list = posts.length < 1 ? [{ id: 0 }] : posts;
   const listEmpty = posts.length < 1;
@@ -19,7 +20,9 @@ export const PostsGridDesignComponent = ({
 
         return (
           <>
-            {addDialog && index === 0 && <AddPostDialog />}
+            {addDialog && index === 0 && (
+              <AddPostDialog openDialog={openDialog} />
+            )}
             {!listEmpty && (
               <View style={styles.imageView}>
                 <Image
