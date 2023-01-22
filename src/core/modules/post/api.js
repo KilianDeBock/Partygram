@@ -1,6 +1,7 @@
 import { supabase } from "../../api/supabase";
 import { uploadImage } from "../files/api";
 import { Bucket } from "../files/constants";
+import { getSupabaseDate } from "../../utils/getSupabaseDate";
 
 export const getStories = async () => {
   const userId = (await supabase.auth.getUser()).data.user.id;
@@ -31,20 +32,22 @@ export const getStories = async () => {
   return { data: filtered };
 };
 
-export const getPosts = async () => {
+export const getPosts = async (lastItem = null) => {
   const userId = (await supabase.auth.getUser()).data.user.id;
 
-  const date = new Date();
-  date.setHours(date.getHours() - 24);
-  const dateString = date.toISOString();
+  const startFromDate = lastItem?.created_at ?? lastItem ?? getSupabaseDate();
+  const last24Hours = getSupabaseDate(null, 24);
 
   return supabase
     .from("posts")
     .select("*")
     .neq("user_id", userId)
     .is("story", false)
-    .gt("created_at", dateString)
+    .lt("created_at", startFromDate) // time is less than last loaded item
+    .gt("created_at", last24Hours) // time is greater than 24h
     .order("created_at", { ascending: false })
+    .range(0, 10)
+    .limit(10)
     .throwOnError();
 };
 
