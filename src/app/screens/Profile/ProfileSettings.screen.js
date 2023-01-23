@@ -36,8 +36,6 @@ export const ProfileSettingsScreen = ({ navigation }) => {
   };
 
   const handlePreferencesSubmit = async (values) => {
-    console.log(values);
-    console.log(values.likes.toString());
     try {
       await AsyncStorage.setItem("@show_likes", values.likes.toString());
     } catch (e) {}
