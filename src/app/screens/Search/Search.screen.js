@@ -9,7 +9,7 @@ export const SearchScreen = () => {
   const [posts, setPosts] = useState([]);
 
   const search = async (search) => {
-    // Search
+    if (!search || search.length < 3) return setPosts([]);
     const p = await searchPosts(search);
     setPosts(p);
   };
