@@ -20,8 +20,6 @@ export const StoryScreen = ({ route, navigation }) => {
       ? stories.findIndex((i) => i.id === selectItem?.id) ?? 0
       : 0;
 
-  console.log("startIndex", startIndex, typeof startIndex);
-
   const [index, setIndex] = useState(startIndex);
 
   const nextImage = () => {
