@@ -12,10 +12,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import isVoid from "../../../../core/utils/isVoid";
 import { getPublicUrl } from "../../../../core/modules/files/utils";
 
-export const ProfileSharedComponent = () => {
+export const ProfileSharedComponent = ({ userId }) => {
+  const queryProfileString = `profile${userId ? `-${userId}` : ""}`;
   const queryClient = useQueryClient();
   const [refreshing, setRefreshing] = useState(false);
-  const { data } = useQuery(["profile"], getFullProfile);
+  const { data } = useQuery([queryProfileString], () => getFullProfile(userId));
 
   const [addAvatarDialog, setAddAvatarDialog] = useState(false);
   const { mutate, isLoading, isError, error } = useMutation(

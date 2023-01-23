@@ -1,4 +1,4 @@
-import { Image, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import IconButton from "../Button/IconButton.design.component";
 import { CommentDesignComponent } from "../Comment/Comment.design.component";
 import Text from "../Text/Text.design.component";
@@ -6,6 +6,8 @@ import { getLikes } from "../../../../core/modules/post/api";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "../../shared/Auth/AuthProvider.shared.component";
 import { updateUserPost } from "../../../../core/modules/userPost/api";
+import { useNavigation } from "@react-navigation/native";
+import { Navigation } from "../../../../core/navigation";
 
 export const PostDesignComponent = ({
   item,
@@ -13,6 +15,7 @@ export const PostDesignComponent = ({
   onComment = () => {},
   onBookmark = () => {},
 }) => {
+  const navigation = useNavigation();
   const auth = useAuth();
   const queryClient = useQueryClient();
   const queryLikesString = `postLikes${item.id}`;
@@ -21,7 +24,9 @@ export const PostDesignComponent = ({
     getLikes(item.id)
   );
   const likes = likesData?.data?.length || 0;
-  const iLiked = likesData?.data?.find((like) => like.user_id === auth.user.id);
+  const iLiked = likesData?.data?.find(
+    (like) => like.user_id === auth?.user?.id
+  );
 
   const date = new Date(item.created_at);
   const month = date.getMonth() + 1;
@@ -48,34 +53,42 @@ export const PostDesignComponent = ({
 
   return (
     <View style={styles.container}>
-      <View style={styles.line}></View>
-      <View>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.description}>{item.description}</Text>
-      </View>
-      <Image
-        style={styles.image}
-        source={{
-          uri: `https://jvrcjuipyagwvwalcpzo.supabase.co/storage/v1/object/public/posts/${item.image}`,
-        }}
-      />
-      <View style={styles.content}>
-        <View style={styles.horizontal}>
-          <IconButton
-            icon={`heart${!iLiked ? "-outline" : ""}`}
-            onPress={_onLike}
-          />
-          <IconButton icon="comment-outline" onPress={_onComment} />
-          <View style={styles.divider} />
-          <IconButton icon="bookmark-outline" onPress={_onBookmark} />
+      <Pressable
+        onPress={() =>
+          navigation.navigate(Navigation.PROFILE_DETAILS, {
+            profile: item.user_id,
+          })
+        }
+      >
+        <View style={styles.line}></View>
+        <View>
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.description}>{item.description}</Text>
         </View>
-        <View style={styles.horizontal}>
-          <Text>{likes} likes</Text>
-          <View style={styles.divider} />
-          <Text>{dateString}</Text>
+        <Image
+          style={styles.image}
+          source={{
+            uri: `https://jvrcjuipyagwvwalcpzo.supabase.co/storage/v1/object/public/posts/${item.image}`,
+          }}
+        />
+        <View style={styles.content}>
+          <View style={styles.horizontal}>
+            <IconButton
+              icon={`heart${!iLiked ? "-outline" : ""}`}
+              onPress={_onLike}
+            />
+            <IconButton icon="comment-outline" onPress={_onComment} />
+            <View style={styles.divider} />
+            <IconButton icon="bookmark-outline" onPress={_onBookmark} />
+          </View>
+          <View style={styles.horizontal}>
+            <Text>{likes} likes</Text>
+            <View style={styles.divider} />
+            <Text>{dateString}</Text>
+          </View>
+          <CommentDesignComponent />
         </View>
-        <CommentDesignComponent />
-      </View>
+      </Pressable>
     </View>
   );
 };

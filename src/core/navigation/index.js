@@ -14,6 +14,7 @@ export const Navigation = Object.freeze({
 
   PROFILE: "Profile",
   PROFILE_OVERVIEW: "ProfileOverview",
+  PROFILE_DETAILS: "ProfileDetails",
   PROFILE_SETTINGS: "ProfileSettings",
 
   CHAT: "Chat",
