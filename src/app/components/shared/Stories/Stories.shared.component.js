@@ -6,8 +6,12 @@ import { useQuery } from "@tanstack/react-query";
 import { getPublicUrl } from "../../../../core/modules/files/utils";
 import { Navigation } from "../../../../core/navigation";
 import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../Auth/AuthProvider.shared.component";
 
 export const StoriesSharedComponent = ({ onAddPost }) => {
+  const { settings } = useAuth();
+  if (!settings.showStories) return null;
+
   const navigation = useNavigation();
   const { data } = useQuery(["stories"], getStories);
   if (!data || !data.data || data.error) return null;

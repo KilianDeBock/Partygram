@@ -7,25 +7,27 @@ import TextButton from "../../components/design/Button/TextButton.design.compone
 import AppSubmitButton from "../../components/shared/Form/AppSubmitButton.shared.component";
 import { ErrorMessage } from "formik";
 import Title from "../../components/design/Text/Title.design.component";
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { Variables } from "../../style";
-import { Navigation } from "../../../core/navigation";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   getMe,
   updateUserProfile,
 } from "../../../core/modules/userProfile/api";
+import AppCheckboxField from "../../components/shared/Form/AppCheckboxField.shared.component";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAuth } from "../../components/shared/Auth/AuthProvider.shared.component";
 
 const schema = yup.object().shape({
-  firstname: yup.string().required(),
-  lastname: yup.string().required(),
-  username: yup.string().required(),
+  likes: yup.bool(),
+  stories: yup.bool(),
 });
 
-export const ProfileSettingsScreen = ({navigation}) => {
-  const {mutate, isLoading, isError, error} = useMutation(updateUserProfile);
+export const ProfileSettingsScreen = ({ navigation }) => {
+  const { settings, updateSettings } = useAuth();
+  const { mutate, isLoading, isError, error } = useMutation(updateUserProfile);
 
-  const {data} = useQuery(["profile"], getMe);
+  const { data } = useQuery(["profile"], getMe);
   if (!data || !data?.data || data.error) return null;
   const profile = data?.data;
 
@@ -33,53 +35,91 @@ export const ProfileSettingsScreen = ({navigation}) => {
     mutate(values);
   };
 
-  const handleRegisterPress = () => {
-    navigation.navigate(Navigation.REGISTER);
+  const handlePreferencesSubmit = async (values) => {
+    console.log(values);
+    console.log(values.likes.toString());
+    try {
+      await AsyncStorage.setItem("@show_likes", values.likes.toString());
+    } catch (e) {}
+    try {
+      await AsyncStorage.setItem("@show_stories", values.stories.toString());
+    } catch (e) {}
+    updateSettings();
   };
 
   return (
     <DefaultView padding={false}>
-      <AppForm
-        initialValues={{
-          firstname: profile.firstname,
-          lastname: profile.lastname,
-          username: profile.username,
-        }}
-        validationSchema={schema}
-        onSubmit={handleSubmit}
-      >
-        <DefaultView style={styles.container}>
-          <Title style={styles.title}>Account Settings</Title>
-          {isError && <ErrorMessage error={error}/>}
-          <AppTextField
-            label="Firstname"
-            name="firstname"
-            disabled={isLoading}
-            placeholder="John"
-          />
-          <AppTextField
-            label="Lastname"
-            name="lastname"
-            disabled={isLoading}
-            placeholder="Doe"
-          />
-          <AppTextField
-            label="Username"
-            name="username"
-            disabled={isLoading}
-            placeholder="Doe"
-          />
-          <AppSubmitButton disabled={isLoading}>Update Profile</AppSubmitButton>
-          <TextButton
-            style={styles.textButton}
-            onPress={() => {
-              supabase.auth.signOut();
-            }}
-          >
-            Log Out
-          </TextButton>
-        </DefaultView>
-      </AppForm>
+      <ScrollView>
+        <AppForm
+          initialValues={{
+            likes: settings.showLikes,
+            stories: settings.showStories,
+          }}
+          validationSchema={schema}
+          onSubmit={handlePreferencesSubmit}
+        >
+          <DefaultView style={styles.container}>
+            <Title style={styles.title}>Account Settings</Title>
+            {isError && <ErrorMessage error={error} />}
+            <AppCheckboxField
+              name="likes"
+              label="Show like count?"
+              disabled={isLoading}
+            />
+            <AppCheckboxField
+              name="stories"
+              label="Show stories?"
+              disabled={isLoading}
+            />
+            <AppSubmitButton disabled={isLoading}>
+              Save preferences
+            </AppSubmitButton>
+          </DefaultView>
+        </AppForm>
+        <AppForm
+          initialValues={{
+            firstname: profile.firstname,
+            lastname: profile.lastname,
+            username: profile.username,
+          }}
+          validationSchema={schema}
+          onSubmit={handleSubmit}
+        >
+          <DefaultView style={styles.container}>
+            <Title style={styles.title}>Account Settings</Title>
+            {isError && <ErrorMessage error={error} />}
+            <AppTextField
+              label="Firstname"
+              name="firstname"
+              disabled={isLoading}
+              placeholder="John"
+            />
+            <AppTextField
+              label="Lastname"
+              name="lastname"
+              disabled={isLoading}
+              placeholder="Doe"
+            />
+            <AppTextField
+              label="Username"
+              name="username"
+              disabled={isLoading}
+              placeholder="Doe"
+            />
+            <AppSubmitButton disabled={isLoading}>
+              Update Profile
+            </AppSubmitButton>
+            <TextButton
+              style={styles.textButton}
+              onPress={() => {
+                supabase.auth.signOut();
+              }}
+            >
+              Log Out
+            </TextButton>
+          </DefaultView>
+        </AppForm>
+      </ScrollView>
     </DefaultView>
   );
 };

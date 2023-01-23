@@ -7,6 +7,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { updateUserPost } from "../../../../core/modules/userPost/api";
 import { useNavigation } from "@react-navigation/native";
 import { Navigation } from "../../../../core/navigation";
+import { useAuth } from "../../shared/Auth/AuthProvider.shared.component";
 
 export const PostDesignComponent = ({
   item,
@@ -15,6 +16,7 @@ export const PostDesignComponent = ({
   onBookmark = () => {},
   currentUserId = 0,
 }) => {
+  const { settings } = useAuth();
   const navigation = useNavigation();
   const queryClient = useQueryClient();
   const queryLikesString = `postLikes${item.id}`;
@@ -82,7 +84,7 @@ export const PostDesignComponent = ({
             <IconButton icon="bookmark-outline" onPress={_onBookmark} />
           </View>
           <View style={styles.horizontal}>
-            <Text>{likes} likes</Text>
+            {settings.showLikes && <Text>{likes} likes</Text>}
             <View style={styles.divider} />
             <Text>{dateString}</Text>
           </View>

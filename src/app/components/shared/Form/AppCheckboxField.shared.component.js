@@ -1,7 +1,7 @@
 import Checkbox from "expo-checkbox";
 import { useFormikContext } from "formik";
 import * as React from "react";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 const AppCheckboxField = React.forwardRef(({ name, label, ...rest }, ref) => {
   const { values, touched, errors, handleBlur, setFieldValue } =
@@ -10,7 +10,7 @@ const AppCheckboxField = React.forwardRef(({ name, label, ...rest }, ref) => {
   const hasError = errors[name] && touched[name];
 
   return (
-    <View style={{ flexDirection: "row" }}>
+    <View style={{ flexDirection: "row", paddingVertical: 10 }}>
       <Checkbox
         ref={ref}
         value={values[name]}
@@ -18,7 +18,9 @@ const AppCheckboxField = React.forwardRef(({ name, label, ...rest }, ref) => {
         color={values[name] ? "#4630EB" : undefined}
         {...rest}
       />
-      <Text style={{ marginLeft: 10 }}>{label ?? ""}</Text>
+      <Pressable onPress={(text) => setFieldValue(name, !values[name])}>
+        <Text style={{ marginLeft: 10 }}>{label ?? ""}</Text>
+      </Pressable>
     </View>
   );
 });
