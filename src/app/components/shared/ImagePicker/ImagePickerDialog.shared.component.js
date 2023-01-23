@@ -23,9 +23,7 @@ const ImagePickerDialog = ({ onDismiss, onImage }) => {
           onImage(assets[0].base64);
         }
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
     onDismiss();
   };
 

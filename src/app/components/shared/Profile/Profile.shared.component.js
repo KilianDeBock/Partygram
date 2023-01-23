@@ -54,7 +54,6 @@ export const ProfileSharedComponent = () => {
 
   const handleImage = (base64) => {
     if (!isVoid(base64)) {
-      console.log(base64);
       mutate({
         postFile: base64,
       });

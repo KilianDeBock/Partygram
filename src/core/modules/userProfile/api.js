@@ -33,15 +33,12 @@ export const getMe = async () => {
 export const getFullProfile = async () => {
   const userId = (await supabase.auth.getUser()).data.user.id;
 
-  console.log("Loading...");
-
   const res = await supabase
     .from("user_profiles")
     .select("*, posts(*)")
     .eq("auth", userId)
     .single();
 
-  console.log(res);
   return res;
 };
 

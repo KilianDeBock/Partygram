@@ -27,7 +27,6 @@ export const StoryScreen = ({ route, navigation }) => {
           nextImage(data.data[ind]);
         } else {
           navigation.navigate(Navigation.HOME_OVERVIEW);
-          console.log("done");
         }
       }, 5000);
     };
