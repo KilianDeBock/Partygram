@@ -204,7 +204,5 @@ export const getFavorites = async () => {
     .eq("liked", true)
     .throwOnError();
 
-  console.log(data);
-
   return data;
 };

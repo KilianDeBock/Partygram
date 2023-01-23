@@ -9,6 +9,7 @@ export const PostsGridDesignComponent = ({
   refreshControl,
   addDialog = false,
   openDialog = false,
+  handleLongPress = (item) => {},
 }) => {
   const navigation = useNavigation();
   const list = posts.length < 1 ? [{ id: 0 }] : posts;
@@ -34,6 +35,7 @@ export const PostsGridDesignComponent = ({
                       profile: item.user_id,
                     })
                   }
+                  onLongPress={() => handleLongPress(item)}
                 >
                   <Image
                     style={styles.image}
