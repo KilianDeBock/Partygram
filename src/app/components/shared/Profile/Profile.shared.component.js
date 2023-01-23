@@ -22,7 +22,7 @@ export const ProfileSharedComponent = ({ userId }) => {
   const { mutate, isLoading, isError, error } = useMutation(
     (profile) => updateUserProfile(profile),
     {
-      onSuccess: () => queryClient.invalidateQueries(["profile"]),
+      onSuccess: () => queryClient.invalidateQueries([queryProfileString]),
     }
   );
 

@@ -4,7 +4,6 @@ import { CommentDesignComponent } from "../Comment/Comment.design.component";
 import Text from "../Text/Text.design.component";
 import { getLikes } from "../../../../core/modules/post/api";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "../../shared/Auth/AuthProvider.shared.component";
 import { updateUserPost } from "../../../../core/modules/userPost/api";
 import { useNavigation } from "@react-navigation/native";
 import { Navigation } from "../../../../core/navigation";
@@ -14,9 +13,9 @@ export const PostDesignComponent = ({
   onLike = () => {},
   onComment = () => {},
   onBookmark = () => {},
+  currentUserId = 0,
 }) => {
   const navigation = useNavigation();
-  const auth = useAuth();
   const queryClient = useQueryClient();
   const queryLikesString = `postLikes${item.id}`;
   const queryCommentsString = `postComments${item.id}`;
@@ -25,7 +24,7 @@ export const PostDesignComponent = ({
   );
   const likes = likesData?.data?.length || 0;
   const iLiked = likesData?.data?.find(
-    (like) => like.user_id === auth?.user?.id
+    (like) => like.user_id === currentUserId
   );
 
   const date = new Date(item.created_at);
@@ -35,9 +34,9 @@ export const PostDesignComponent = ({
   const _onLike = async () => {
     await onLike(item.id);
     if (!!iLiked) {
-      await updateUserPost(auth.user.id, item.id, { liked: false });
+      await updateUserPost(currentUserId, item.id, { liked: false });
     } else {
-      await updateUserPost(auth.user.id, item.id, { liked: true });
+      await updateUserPost(currentUserId, item.id, { liked: true });
     }
     await queryClient.invalidateQueries([queryLikesString]);
   };

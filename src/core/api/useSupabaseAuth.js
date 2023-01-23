@@ -8,13 +8,14 @@ const useSupabaseAuth = () => {
   const queryClient = useQueryClient();
   const [isInitialized, setIsInitialized] = useState(false);
   const [auth, setAuth] = useState();
-  const { data } = useQuery(["profile"], getFullProfile);
+  const { data } = useQuery(["profile"], () => getFullProfile());
   const profile = data?.data;
 
   useEffect(() => {
     const checkAuth = async () => {
       const session = await getCurrentSession();
       setAuth(session);
+      queryClient.invalidateQueries(["profile"]);
       setIsInitialized(true);
     };
     checkAuth();
@@ -44,7 +45,7 @@ const useSupabaseAuth = () => {
     [auth, profile]
   );
 
-  const isLoggedIn = isInitialized && !!auth;
+  const isLoggedIn = isInitialized && !!auth && !!profile;
 
   return {
     isInitialized,

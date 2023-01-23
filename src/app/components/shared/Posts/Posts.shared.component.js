@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { getPosts } from "../../../../core/modules/post/api";
 import { PostDesignComponent } from "../../design/Post/Post.design.component";
 import { useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "../Auth/AuthProvider.shared.component";
 
 export const PostsSharedComponent = ({
   emptyTitle,
@@ -12,6 +13,9 @@ export const PostsSharedComponent = ({
   emptyIcon,
   onAddItem,
 }) => {
+  const { user } = useAuth();
+  if (!user) return null;
+  const currentUserId = user?.id;
   const queryClient = useQueryClient();
   const [refreshing, setRefreshing] = useState(false);
   const [data, setData] = useState([]);
@@ -71,7 +75,9 @@ export const PostsSharedComponent = ({
           onScroll={handleScroll}
           ItemSeparatorComponent={() => <Divider />}
           data={data}
-          renderItem={({ item }) => <PostDesignComponent item={item} />}
+          renderItem={({ item }) => (
+            <PostDesignComponent currentUserId={currentUserId} item={item} />
+          )}
           keyExtractor={(item) => item.id}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

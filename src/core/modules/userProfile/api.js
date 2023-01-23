@@ -19,17 +19,6 @@ export const getUserProfileById = async (id) => {
     .throwOnError();
 };
 
-export const getMe = async () => {
-  const userId = (await supabase.auth.getUser()).data.user.id;
-
-  return await supabase
-    .from("user_profiles")
-    .select("*")
-    .eq("auth", userId)
-    .single()
-    .throwOnError();
-};
-
 export const getFullProfile = async (userId) => {
   const _userId = userId ?? (await supabase.auth.getUser()).data.user.id;
 
@@ -37,7 +26,8 @@ export const getFullProfile = async (userId) => {
     .from("user_profiles")
     .select("*, posts(*)")
     .eq("auth", _userId)
-    .single();
+    .single()
+    .throwOnError();
 };
 
 export const updateUserProfile = async (body) => {

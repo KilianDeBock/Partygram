@@ -22,8 +22,6 @@ export const ProfileScreen = ({ route, navigation }) => {
   const onRefresh = async () => {
     setRefreshing(true);
     await queryClient.invalidateQueries(["users"]);
-    await queryClient.invalidateQueries(["users"]);
-    await queryClient.invalidateQueries(["myPosts"]);
     await queryClient.invalidateQueries(["myPosts"]);
     setRefreshing(false);
   };
