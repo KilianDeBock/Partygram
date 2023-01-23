@@ -33,7 +33,7 @@ export const StoryScreen = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    if (!data || !stories || data.error) return () => {};
+    if (!data || !stories || stories.length < 1 || data.error) return () => {};
 
     setTimeLeft(5);
     const timeout = setTimeout(() => {
@@ -55,7 +55,7 @@ export const StoryScreen = ({ route, navigation }) => {
   }, [index]);
 
   useEffect(() => {
-    if (!data || !stories || data.error) return () => {};
+    if (!data || !stories || stories.length < 1 || data.error) return () => {};
 
     nextImage();
   }, [data]);
