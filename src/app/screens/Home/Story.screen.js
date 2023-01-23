@@ -22,13 +22,14 @@ export const StoryScreen = ({ route, navigation }) => {
   const [index, setIndex] = useState(startIndex);
 
   const nextImage = () => {
-    if (index >= stories.length) {
+    const ind = index ?? 0;
+    if (ind >= stories.length) {
       return navigation.navigate(Navigation.HOME_OVERVIEW);
     }
-    const newStory = stories[index];
+    const newStory = stories[ind];
     const img = { uri: getPublicUrl("posts", newStory.image) };
     setStory({ ...newStory, image: img });
-    setIndex(index + 1);
+    setIndex(ind + 1);
   };
 
   useEffect(() => {
@@ -67,13 +68,10 @@ export const StoryScreen = ({ route, navigation }) => {
   return (
     <DefaultView padding={false}>
       <Pressable onPress={nextImage}>
-        <Text>
-          {timeLeft > 5 ? 0 : timeLeft} seconds left! //{" "}
-          {userStoriesLeft.length}/{userStories.length} stories left
-        </Text>
+        <Text>{timeLeft > 5 ? 0 : timeLeft} seconds left!</Text>
         <Text>
           Viewing a story from {user.firstname} {user.lastname} ({user.username}
-          )
+          ) ({userStoriesLeft.length}/{userStories.length})
         </Text>
         <Image source={story.image} style={styles.image} />
       </Pressable>
