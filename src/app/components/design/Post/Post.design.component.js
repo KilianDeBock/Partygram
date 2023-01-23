@@ -39,6 +39,7 @@ export const PostDesignComponent = ({
       await updateUserPost(currentUserId, item.id, { liked: true });
     }
     await queryClient.invalidateQueries([queryLikesString]);
+    await queryClient.invalidateQueries(["favorites"]);
   };
 
   const _onComment = () => {

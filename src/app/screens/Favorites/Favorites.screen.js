@@ -1,18 +1,17 @@
-import { PostDesignComponent } from "../../components/design/Post/Post.design.component";
+import { PostsGridDesignComponent } from "../../components/design/PostsGrid/PostsGrid.design.component";
 import DefaultView from "../../components/design/View/DefaultView.design.component";
-import DataListView from "../../components/shared/Data/DataListView.shared.component";
+import { useQuery } from "@tanstack/react-query";
+import { getFavorites } from "../../../core/modules/post/api";
 
 export const FavoritesScreen = () => {
+  const { data: posts } = useQuery(["favorites"], getFavorites);
+
+  if (!posts || !posts?.data) return null;
+  const data = posts.data.map((post) => post.post);
+
   return (
     <DefaultView padding={false}>
-      <DataListView
-        name={["posts-favorites"]}
-        method={() => ({ data: ["1", "2", "3", "4", "5"] })}
-        emptyTitle={"No posts"}
-        emptyDescription={"You have no posts."}
-        emptyIcon="folder"
-        renderItem={({ item }) => <PostDesignComponent />}
-      />
+      <PostsGridDesignComponent posts={data} />
     </DefaultView>
   );
 };

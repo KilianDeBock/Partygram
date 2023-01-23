@@ -1,6 +1,8 @@
-import { FlatList, Image, StyleSheet, View } from "react-native";
+import { FlatList, Image, Pressable, StyleSheet, View } from "react-native";
 import { AddPostDialog } from "../../shared/AddPostDialog/AddPostDialog.shared.component";
 import { getPublicUrl } from "../../../../core/modules/files/utils";
+import { Navigation } from "../../../../core/navigation";
+import { useNavigation } from "@react-navigation/native";
 
 export const PostsGridDesignComponent = ({
   posts,
@@ -8,6 +10,7 @@ export const PostsGridDesignComponent = ({
   addDialog = false,
   openDialog = false,
 }) => {
+  const navigation = useNavigation();
   const list = posts.length < 1 ? [{ id: 0 }] : posts;
   const listEmpty = posts.length < 1;
 
@@ -25,12 +28,20 @@ export const PostsGridDesignComponent = ({
             )}
             {!listEmpty && (
               <View style={styles.imageView}>
-                <Image
-                  style={styles.image}
-                  source={{
-                    uri: publicUrl,
-                  }}
-                />
+                <Pressable
+                  onPress={() =>
+                    navigation.navigate(Navigation.PROFILE_DETAILS, {
+                      profile: item.user_id,
+                    })
+                  }
+                >
+                  <Image
+                    style={styles.image}
+                    source={{
+                      uri: publicUrl,
+                    }}
+                  />
+                </Pressable>
               </View>
             )}
           </>
