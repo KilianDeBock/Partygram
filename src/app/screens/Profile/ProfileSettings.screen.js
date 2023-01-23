@@ -11,7 +11,7 @@ import { ScrollView, StyleSheet } from "react-native";
 import { Variables } from "../../style";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
-  getMe,
+  getFullProfile,
   updateUserProfile,
 } from "../../../core/modules/userProfile/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -27,7 +27,7 @@ export const ProfileSettingsScreen = ({ navigation }) => {
   const { settings, updateSettings } = useAuth();
   const { mutate, isLoading, isError, error } = useMutation(updateUserProfile);
 
-  const { data } = useQuery(["profile"], getMe);
+  const { data } = useQuery(["profile"], () => getFullProfile());
   if (!data || !data?.data || data.error) return null;
   const profile = data?.data;
 
