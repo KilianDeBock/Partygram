@@ -32,6 +32,31 @@ export const getStories = async () => {
   return { data: filtered };
 };
 
+export const getAllStories = async () => {
+  const userId = (await supabase.auth.getUser()).data.user.id;
+
+  const date = new Date();
+  date.setHours(date.getHours() - 24);
+  const dateString = date.toISOString();
+
+  const { data } = await supabase
+    .from("posts")
+    .select("*, user_profiles(*)")
+    .neq("user_id", userId)
+    .is("story", true)
+    .gt("created_at", dateString)
+    .order("created_at", { ascending: false })
+    .throwOnError();
+
+  const stories = data ?? [];
+
+  if (stories.length < 1) {
+    return { data: [] };
+  }
+
+  return { data: stories };
+};
+
 export const getPosts = async (lastItem = null) => {
   const userId = (await supabase.auth.getUser()).data.user.id;
 

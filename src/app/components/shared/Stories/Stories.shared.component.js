@@ -31,7 +31,7 @@ export const StoriesSharedComponent = ({ onAddPost }) => {
           return (
             <StoryDesignComponent
               image={image}
-              onPress={() => navigation.navigate(Navigation.STORY, { index })}
+              onPress={() => navigation.navigate(Navigation.STORY, { item })}
             />
           );
         }}

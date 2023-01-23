@@ -53,6 +53,7 @@ export const PostsSharedComponent = ({
   const onRefresh = async () => {
     setRefreshing(true);
     await queryClient.invalidateQueries(["stories"]);
+    await queryClient.invalidateQueries(["allStories"]);
     await queryClient.invalidateQueries(["posts"]);
     const d = await getPosts();
     setData(d.data ?? []);
