@@ -2,8 +2,50 @@ import { Image, StyleSheet, View } from "react-native";
 import IconButton from "../Button/IconButton.design.component";
 import { CommentDesignComponent } from "../Comment/Comment.design.component";
 import Text from "../Text/Text.design.component";
+import { getLikes } from "../../../../core/modules/post/api";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "../../shared/Auth/AuthProvider.shared.component";
+import { updateUserPost } from "../../../../core/modules/userPost/api";
 
-export const PostDesignComponent = ({ item }) => {
+export const PostDesignComponent = ({
+  item,
+  onLike = () => {},
+  onComment = () => {},
+  onBookmark = () => {},
+}) => {
+  const auth = useAuth();
+  const queryClient = useQueryClient();
+  const queryLikesString = `postLikes${item.id}`;
+  const queryCommentsString = `postComments${item.id}`;
+  const { data: likesData } = useQuery([queryLikesString], () =>
+    getLikes(item.id)
+  );
+  const likes = likesData?.data?.length || 0;
+  const iLiked = likesData?.data?.find((like) => like.user_id === auth.user.id);
+
+  const date = new Date(item.created_at);
+  const month = date.getMonth() + 1;
+  const dateString = `${date.getDate()}/${month < 10 ? "0" + month : month}`;
+
+  const _onLike = async () => {
+    await onLike(item.id);
+    if (!!iLiked) {
+      await updateUserPost(auth.user.id, item.id, { liked: false });
+    } else {
+      await updateUserPost(auth.user.id, item.id, { liked: true });
+    }
+    await queryClient.invalidateQueries([queryLikesString]);
+  };
+
+  const _onComment = () => {
+    queryClient.invalidateQueries([queryCommentsString]);
+    onComment(item.id);
+  };
+
+  const _onBookmark = () => {
+    onBookmark(item.id);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.line}></View>
@@ -19,15 +61,18 @@ export const PostDesignComponent = ({ item }) => {
       />
       <View style={styles.content}>
         <View style={styles.horizontal}>
-          <IconButton icon="heart-outline" />
-          <IconButton icon="comment-outline" />
+          <IconButton
+            icon={`heart${!iLiked ? "-outline" : ""}`}
+            onPress={_onLike}
+          />
+          <IconButton icon="comment-outline" onPress={_onComment} />
           <View style={styles.divider} />
-          <IconButton icon="bookmark-outline" />
+          <IconButton icon="bookmark-outline" onPress={_onBookmark} />
         </View>
         <View style={styles.horizontal}>
-          <Text>10 likes</Text>
+          <Text>{likes} likes</Text>
           <View style={styles.divider} />
-          <Text>24/10</Text>
+          <Text>{dateString}</Text>
         </View>
         <CommentDesignComponent />
       </View>

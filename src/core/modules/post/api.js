@@ -182,3 +182,14 @@ export const likeOrPinPost = async (id, { liked, pinned }) => {
       .throwOnError();
   }
 };
+
+export const getLikes = async (id) => {
+  const data = await supabase
+    .from("user_post")
+    .select("*")
+    .eq("post", id)
+    .eq("liked", true)
+    .throwOnError();
+
+  return data;
+};
