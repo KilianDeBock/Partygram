@@ -15,9 +15,6 @@ export const StoryScreen = ({ route, navigation }) => {
   useEffect(() => {
     if (!data || !data.data || data.error) return () => {};
 
-    console.log(data.data);
-    console.log(data.data.length);
-
     let timeout;
     let ind = selectItem
       ? data.data.findIndex((i) => i.id === selectItem.id) ?? 0

@@ -14,9 +14,9 @@ import {
   getMe,
   updateUserProfile,
 } from "../../../core/modules/userProfile/api";
-import AppCheckboxField from "../../components/shared/Form/AppCheckboxField.shared.component";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../../components/shared/Auth/AuthProvider.shared.component";
+import { AppSwitchField } from "../../components/shared/Form/AppSwitchField.shared.component";
 
 const schema = yup.object().shape({
   likes: yup.bool(),
@@ -59,12 +59,12 @@ export const ProfileSettingsScreen = ({ navigation }) => {
           <DefaultView style={styles.container}>
             <Title style={styles.title}>Account Settings</Title>
             {isError && <ErrorMessage error={error} />}
-            <AppCheckboxField
+            <AppSwitchField
               name="likes"
               label="Show like count?"
               disabled={isLoading}
             />
-            <AppCheckboxField
+            <AppSwitchField
               name="stories"
               label="Show stories?"
               disabled={isLoading}
